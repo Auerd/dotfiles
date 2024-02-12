@@ -33,14 +33,13 @@ fi
 
 
 
-#Aliases 
+# Aliases 
 alias ls="ls --color=auto" 
 alias la="ls -A"
 alias ll="ls -lA"
 alias grep="grep --color=auto"
 alias yayy="yay -Syu --noconfirm"
 alias upg="yayy && sudo flatpak update -y"
-alias pshltcm="git push -u origin HEAD"
 
 
 # Commands
