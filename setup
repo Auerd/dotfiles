@@ -1,0 +1,44 @@
+#!/usr/bin/bash
+
+nlink ()
+{
+  if [[ -a $2 ]]; then
+    while true; do
+      echo -n "File or directory $2 exists. Do you want to replace it? (y/n) ";
+      read -r answer;
+      case $answer in
+        [yY] ) echo "Deleting $2 ...";
+          rm -rf "$2";
+          break;;
+        [nN] ) echo "Skiping...";
+          return 0;;
+        * ) echo "Wrong answer! Try again";;
+      esac
+    done
+  fi
+  echo "Linking $1 to $2..."
+  ln -s "$1" "$2"
+  return 0;
+}
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ME=${0##*/}
+
+for file in "$SCRIPT_DIR"/*; do
+  case $file in
+    "$SCRIPT_DIR/$ME")
+      ;;
+    "$SCRIPT_DIR/config")
+      if [[ -n $XDG_CONFIG_HOME ]]; then
+        nlink "$file" "$XDG_CONFIG_HOME"        
+      else
+        nlink "$file" "$HOME/.${file##*/}"
+      fi
+      ;;
+    *)
+      nlink "$file" "$HOME/.${file##*/}"
+      ;;
+  esac
+done
+
+echo "Done!"
