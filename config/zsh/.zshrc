@@ -167,5 +167,5 @@ CORRECT_IGNORE="[_|.]*"
 
 
 # Optional machine-dependent zsh configuration
-[[ -a $ZDOTDIR/.pzshrc ]] && source .pzshrc
+[[ -a $ZDOTDIR/.pzshrc ]] && source $ZDOTDIR/.pzshrc
 
