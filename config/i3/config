@@ -17,7 +17,6 @@ font pango:JetBrainsMono NF Light 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -53,7 +52,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # picom
-exec_always /bin/sh $HOME/.config/scripts/picom/picomsel.sh
+exec_always /bin/bash $HOME/.config/scripts/picomsel.sh
 
 # gaps
 gaps inner 12

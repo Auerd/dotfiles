@@ -16,4 +16,5 @@ flameshot/
 QtProject.conf
 nnn/plugins
 xkb/
+calibre/
 **/*.log
