@@ -17,4 +17,5 @@ QtProject.conf
 nnn/plugins
 xkb/
 calibre/
+gtk*/
 **/*.log

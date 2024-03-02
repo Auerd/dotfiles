@@ -6,11 +6,13 @@ promptinit
 
 zstyle ':completion::complete:*' gain-privileges 1 
 
+HOSTNAME=$(hostname)
+
 #Prompt 
 set_prompt(){ 
-  PROMPT='%F{green}%~%f %(!.#.$) '
+  PROMPT='%F{green}%2~%f %(!.#.$) '
   USER_HOST='%F{blue}%n@%m%f' 
-  (( $COLUMNS-${#USER_HOST} >= "50" )) && PROMPT="$USER_HOST $PROMPT" 
+  (( $COLUMNS-${#HOSTNAME} >= "76" )) && PROMPT="$USER_HOST $PROMPT" 
 } 
 
 if [[ -a $ZDOTDIR/.prompt ]] then 
@@ -78,15 +80,15 @@ add-zsh-hook -Uz precmd reset_broken_terminal
 
 # Autorehash for pacman
 if [[ -x $(command -v pacman) ]]; then
-	if ! [[ -a /var/cache/zsh/pacman ]] 
+	if ! [[ -a $PREFIX/var/cache/zsh/pacman ]] 
 	then
 		echo "Warning you've not enabled zsh pacman hook yet.\n
-		Please, copy ~/.config/scripts/zsh.hook to current pacman hooks' directory"
+		Please, copy ~/.config/scripts/zsh.hook to current pacman's hooks directory"
 	else
 		zshcache_time="$(date +%s%N)"
 		
 		rehash_precmd() {
-		    local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
+		    local paccache_time="$(date -r $PREFIX/var/cache/zsh/pacman +%s%N)"
 		    if (( zshcache_time < paccache_time )); then
 		      rehash
 		      zshcache_time="$paccache_time"
