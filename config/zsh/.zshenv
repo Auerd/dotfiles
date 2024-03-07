@@ -4,6 +4,6 @@ export PATH
 
 ZDOTDIR=$HOME/.config/zsh
 
-if [[ -a "$HOME/.pzshenv" ]]; then
-	source .pzshenv;
+if [[ -a "$HOME/.zshenvp" ]]; then
+	source .zshenvp;
 fi

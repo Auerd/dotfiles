@@ -1,3 +1,3 @@
-if [[ -a $ZDOTDIR/.pzlogin ]] then
-  source $ZDOTDIR/.pzlogin;
+if [[ -a $ZDOTDIR/.zloginp ]] then
+  source $ZDOTDIR/.zloginp;
 fi

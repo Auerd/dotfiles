@@ -7,12 +7,13 @@ promptinit
 zstyle ':completion::complete:*' gain-privileges 1 
 
 HOSTNAME=$(hostname)
+WHOAMI=$(whoami)
 
 #Prompt 
 set_prompt(){ 
   PROMPT='%F{green}%2~%f %(!.#.$) '
   USER_HOST='%F{blue}%n@%m%f' 
-  (( $COLUMNS-${#HOSTNAME} >= "76" )) && PROMPT="$USER_HOST $PROMPT" 
+  (( $COLUMNS-${#HOSTNAME}-${#WHOAMI} >= "76" )) && PROMPT="$USER_HOST $PROMPT" 
 } 
 
 if [[ -a $ZDOTDIR/.prompt ]] then 
@@ -55,7 +56,7 @@ mkcdir()
 
 
 # Plugins
-source ~/.config/zsh/plugins/antigen.zsh
+source $ZDOTDIR/plugins/antigen.zsh
 
 antigen use oh-my-zsh
 antigen bundles <<EOBUNDLES
@@ -170,5 +171,4 @@ CORRECT_IGNORE="[_|.]*"
 
 
 # Optional machine-dependent zsh configuration
-[[ -a $ZDOTDIR/.pzshrc ]] && source $ZDOTDIR/.pzshrc
-
+[[ -a $ZDOTDIR/.zshrcp ]] && source $ZDOTDIR/.zshrcp
