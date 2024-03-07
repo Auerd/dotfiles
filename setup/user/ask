@@ -1,0 +1,12 @@
+#!/bin/bash
+while true; do
+  echo -n $1
+  read -r answer;
+  case $answer in
+    [yY]) 
+      exit 0;;
+    [nN]) 
+      exit 1;;
+    * ) echo "Wrong answer! Try again";;
+  esac
+done

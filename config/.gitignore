@@ -2,6 +2,7 @@ pavucontrol.ini
 noglxpicom.conf
 htop/
 coc/
+cmus/
 elinks/
 pulse/
 transmission-daemon/
@@ -17,5 +18,8 @@ QtProject.conf
 nnn/plugins
 xkb/
 calibre/
+systemd/
+bashtop/
 gtk*/
+zoom*
 **/*.log

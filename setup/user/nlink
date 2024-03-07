@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e -u
+
+if [[ -a $2 ]]; then
+  if ask "File or directory $2 exists. Do you want to replace it? (y/n) ";
+  then
+    echo "Deleting $2 ..."
+  else
+    echo "Skipping..."
+    exit 0
+  fi
+fi
+echo "Linking $1 to $2..."
+ln -s "$1" "$2"
+exit 0;

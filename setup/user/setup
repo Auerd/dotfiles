@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+
+
+echo "Setting up home directory"
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ME=${0##*/}
+PATH=$PATH:$SCRIPT_DIR
+
+for file in "$SCRIPT_DIR"/*; do
+  case $file in
+    "$SCRIPT_DIR/$ME")
+      ;;
+    "$SCRIPT_DIR/config")
+      if [[ -n $XDG_CONFIG_HOME ]]; then
+        nlink "$file" "$XDG_CONFIG_HOME"        
+      else
+        nlink "$file" "$HOME/.${file##*/}"
+      fi
+      ;;
+    *)
+      nlink "$file" "$HOME/.${file##*/}"
+      ;;
+  esac
+done
+
+if ask "Do you want to install needed programs?"; then
+  
