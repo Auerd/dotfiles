@@ -23,6 +23,3 @@ for file in "$SCRIPT_DIR"/*; do
       ;;
   esac
 done
-
-if ask "Do you want to install needed programs?"; then
-  
