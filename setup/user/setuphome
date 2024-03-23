@@ -4,14 +4,15 @@
 echo "Setting up home directory"
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+FILES_DIR="$SCRIPT_DIR"/../..
 ME=${0##*/}
 PATH=$PATH:$SCRIPT_DIR
 
-for file in "$SCRIPT_DIR"/*; do
+for file in "$FILES_DIR"/*; do
   case $file in
-    "$SCRIPT_DIR/$ME")
+    "$FILES_DIR/setup")
       ;;
-    "$SCRIPT_DIR/config")
+    "$FILES_DIR/config")
       if [[ -n $XDG_CONFIG_HOME ]]; then
         nlink "$file" "$XDG_CONFIG_HOME"        
       else
