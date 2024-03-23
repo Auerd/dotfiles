@@ -6,6 +6,7 @@ if [[ -a $2 ]]; then
   if ask "File or directory $2 exists. Do you want to replace it? (y/n) ";
   then
     echo "Deleting $2 ..."
+    rm -rf "$2"
   else
     echo "Skipping..."
     exit 0
