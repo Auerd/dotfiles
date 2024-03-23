@@ -27,13 +27,6 @@ M.mason = {
     "lua-language-server",
     "stylua",
 
-    -- web dev stuff
-    "css-lsp",
-    "html-lsp",
-    "typescript-language-server",
-    "deno",
-    "prettier",
-
     -- c/cpp stuff
     "clangd",
     "clang-format",
@@ -45,7 +38,8 @@ M.nvimtree = {
   git = {
     enable = true,
   },
-
+  disable_netrw = false,
+  hijack_unnamed_buffer_when_opening = true,
   renderer = {
     highlight_git = true,
     icons = {

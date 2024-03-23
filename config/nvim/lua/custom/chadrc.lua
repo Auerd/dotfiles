@@ -12,7 +12,11 @@ M.ui = {
   hl_add = highlights.add,
   tabufline = {
     enabled = false,
-  }
+  },
+
+  nvdash = {
+    load_on_startup = true,
+  },
 }
 
 M.plugins = "custom.plugins"
