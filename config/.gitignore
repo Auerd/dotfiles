@@ -1,6 +1,5 @@
 *
 !alacritty/
-!cava/
 !discord/settings.json/
 !i3/
 !i3status/
@@ -15,3 +14,20 @@
 !yay/
 !yt-dlp/
 !zsh/
+!polybar/
+!alacritty/**/*
+!discord/settings.json/**/*
+!i3/**/*
+!i3status/**/*
+!kitty/**/*
+!neofetch/**/*
+!nvim/**/*
+!picom.conf/**/*
+!rofi/**/*
+!scripts/**/*
+!speech-dispatcher/**/*
+!user-tmpfiles.d/**/*
+!yay/**/*
+!yt-dlp/**/*
+!zsh/**/*
+!polybar/**/*
