@@ -15,6 +15,7 @@
 !yt-dlp/
 !zsh/
 !polybar/
+!gtk-3.0/
 !alacritty/**/*
 !discord/settings.json/**/*
 !i3/**/*
@@ -31,3 +32,4 @@
 !yt-dlp/**/*
 !zsh/**/*
 !polybar/**/*
+!gtk-3.0/**/*
