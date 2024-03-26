@@ -16,8 +16,8 @@ for file in "$FILES_DIR"/*; do
       ndlink "$file" "${XDG_CONFIG_HOME:-$HOME/.config}"
       ;;
     "local")
-      [[ -d "$file/share"]] && ndlink "$file/share" ${XDG_DATA_HOME:-$HOME/.local/share}
-      [[ -d "$file/state"]] && ndlink "$file/state" ${XDG_STATE_HOME:-$HOME/.local/state}
+      [[ -d "$file/share" ]] && ndlink "$file/share" ${XDG_DATA_HOME:-$HOME/.local/share}
+      [[ -d "$file/state" ]] && ndlink "$file/state" ${XDG_STATE_HOME:-$HOME/.local/state}
       ;;
     *)
       nlink "$file" "$HOME/.${file##*/}"
