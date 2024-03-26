@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e -u
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ME=${0##*/}
+PATH=$PATH:$SCRIPT_DIR
+
+if [[ -a $2 ]] && [[ ! -d $2 ]]; then
+  if ask "$2 is not a directory. Do you want to replace it? (y/n) ";
+  then
+    echo "Deleting $2 ..."
+    rm -rf "$2"
+  else
+    echo "Skipping..."
+    exit 0
+  fi
+fi
+
+mkdir -p $2
+echo "Linking all files and dirs in $1 to $2..."
+for file in "$1"/*; do
+  nlink "$file" "$2/${file##*/}"
+done
+exit 0;
