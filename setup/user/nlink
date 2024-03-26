@@ -2,7 +2,7 @@
 
 set -e -u
 
-if [[ -e $2 ]]; then
+if [[ -e $2 ]] || [[ -L $2 ]]; then
   if ask "File $2 exists. Do you want to replace it? (y/n) ";
   then
     echo "Deleting $2 ..."
