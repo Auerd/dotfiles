@@ -5,7 +5,6 @@ echo "Setting up home directory"
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FILES_DIR="$SCRIPT_DIR"/../..
-ME=${0##*/}
 PATH=$PATH:$SCRIPT_DIR
 
 for file in "$FILES_DIR"/*; do
