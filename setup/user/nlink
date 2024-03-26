@@ -13,5 +13,5 @@ if [[ -a $2 ]]; then
   fi
 fi
 echo "Linking $1 to $2..."
-ln -s "$1" "$2"
+ln -sr "$1" "$2"
 exit 0;
