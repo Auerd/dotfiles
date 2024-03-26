@@ -3,7 +3,7 @@ path=($HOME/.local/bin $path)
 export PATH
 
 
-[[ -a $HOME/.pzshenv ]] && source $HOME/.pzshenv;
+[[ -a $HOME/.zshenvp ]] && source $HOME/.zshenvp;
 
 export ZSH_CACHE_DIRECTORY=$HOME/.cache/zsh
 [[ -n $XDG_CACHE_HOME ]] && export ZSH_CACHE_DIRECTORY=$XDG_CACHE_HOME/zsh;
@@ -18,4 +18,4 @@ export ZDOTDIR=$HOME/.config/zsh
 [[ -n $XDG_CONFIG_HOME ]] && export ZDOTDIR=$XDG_CONFIG_HOME/zsh;
 export EDITOR=$PREFIX/bin/nvim
 
-[[ -a $ZDOTDIR/.pzshenv ]] && source $ZDOTDIR/.pzshenv;
+[[ -a $ZDOTDIR/.zshenvp ]] && source $ZDOTDIR/.zshenvp;
