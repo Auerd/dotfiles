@@ -5,12 +5,18 @@
 local M = {}
 
 M.ui = {
-	theme = "onedark",
+	theme = "ayu_dark",
 
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+	hl_override = {
+		Comment = { italic = true },
+		["@comment"] = { italic = true },
+	},
+  nvdash = {
+    load_on_startup = true,
+  },
+  tabufline = {
+    enabled = false,
+  }
 }
 
 return M
