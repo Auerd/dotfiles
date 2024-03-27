@@ -5,7 +5,6 @@ echo "Setting up home directory"
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FILES_DIR="$SCRIPT_DIR"/../..
-ME=${0##*/}
 PATH=$PATH:$SCRIPT_DIR
 
 for file in "$FILES_DIR"/*; do
@@ -16,8 +15,8 @@ for file in "$FILES_DIR"/*; do
       ndlink "$file" "${XDG_CONFIG_HOME:-$HOME/.config}"
       ;;
     "local")
-      [[ -d "$file/share" ]] && ndlink "$file/share" ${XDG_DATA_HOME:-$HOME/.local/share}
-      [[ -d "$file/state" ]] && ndlink "$file/state" ${XDG_STATE_HOME:-$HOME/.local/state}
+      [[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
+      [[ -d "$file/state" ]] && ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
       ;;
     *)
       nlink "$file" "$HOME/.${file##*/}"
