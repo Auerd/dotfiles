@@ -1,6 +1,6 @@
 return {
-  defaults = { lazy = true },
-  install = { colorscheme = { "nvchad" } },
+  defaults = { lazy = true, },
+  install = { colorscheme = { "nvchad" }, },
 
   ui = {
     icons = {
@@ -9,6 +9,12 @@ return {
       loaded = "",
       not_loaded = "",
     },
+  },
+
+  checker = {
+    enabled = true,
+    notify = true,
+    frequency = 604800,
   },
 
   performance = {

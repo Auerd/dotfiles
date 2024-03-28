@@ -52,5 +52,5 @@ return {
         adaptive_size = true,
       },
     }
-  }
+  },
 }
