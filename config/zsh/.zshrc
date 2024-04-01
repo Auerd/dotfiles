@@ -1,6 +1,6 @@
 autoload -Uz compinit promptinit add-zsh-hook 
 
-compinit -d $ZSH_CACHE_DIRECTORY/zcompdump-$ZSH_VERSION 
+compinit -d "$ZSH_CACHE_DIRECTORY/zcompdump-$ZSH_VERSION" 
 
 promptinit 
 
@@ -12,18 +12,18 @@ WHOAMI=$(whoami)
 set_prompt(){ 
   PROMPT='%F{green}%2~%f %(!.#.$) '
   USER_HOST='%F{blue}%n@%m%f' 
-  (( $COLUMNS-${#HOST}-${#WHOAMI} >= "76" )) && PROMPT="$USER_HOST $PROMPT" 
+  (( COLUMNS-${#HOST}-${#WHOAMI} >= "76" )) && PROMPT="$USER_HOST $PROMPT" 
 } 
 
-if [[ -a $ZDOTDIR/.prompt ]] then 
-  source $ZDOTDIR/.prompt; 
+if [[ -f $ZDOTDIR/.prompt ]]; then 
+  source "$ZDOTDIR/.prompt"; 
 else 
   set_prompt 
   add-zsh-hook -Uz precmd set_prompt; 
 fi 
 
-if [[ -a $ZDOTDIR/.rprompt ]] then 
-  source $ZDOTDIR/.rprompt; 
+if [[ -f $ZDOTDIR/.rprompt ]]; then 
+  source "$ZDOTDIR/.rprompt"; 
 else 
   RPROMPT=''; 
 fi 
@@ -49,13 +49,13 @@ alias upg="yayy && sudo flatpak update -y"
 mkcdir()
 {
   mkdir -p -- "$1" &&
-    cd -P -- "$1"
+    cd -P -- "$1" || return 1
 }
 
 
 
 # Plugins
-source $ZDOTDIR/plugins/antigen.zsh
+source "$ZDOTDIR/plugins/antigen.zsh"
 
 antigen use oh-my-zsh
 antigen bundles <<EOBUNDLES
@@ -81,19 +81,20 @@ add-zsh-hook -Uz precmd reset_broken_terminal
 
 # Autorehash for pacman
 if [[ -x $(command -v pacman) ]]; then
-	if ! [[ -a $PREFIX/var/cache/zsh/pacman ]] 
+	if ! [[ -f $PREFIX/var/cache/zsh/pacman ]] 
 	then
-		echo "Warning you've not enabled zsh pacman hook yet.\n
+    printf "Warning you've not enabled zsh pacman hook yet.\n
 		Please, copy ~/.config/scripts/zsh.hook to current pacman's hooks directory"
 	else
 		zshcache_time="$(date +%s%N)"
 		
 		rehash_precmd() {
-		    local paccache_time="$(date -r $PREFIX/var/cache/zsh/pacman +%s%N)"
-		    if (( zshcache_time < paccache_time )); then
-		      rehash
-		      zshcache_time="$paccache_time"
-		    fi
+      local paccache_time
+		  paccache_time="$(date -r "$PREFIX/var/cache/zsh/pacman" +%s%N)"
+		  if (( zshcache_time < paccache_time )); then
+		    rehash
+		    zshcache_time="$paccache_time"
+		  fi
 		}
 		
 		add-zsh-hook -Uz precmd rehash_precmd
@@ -137,8 +138,8 @@ key[Control-Right]="${terminfo[kRIT5]}"
 
 if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 	autoload -Uz add-zle-hook-widget
-	function zle_application_mode_start { echoti smkx }
-	function zle_application_mode_stop { echoti rmkx }
+	function zle_application_mode_start { echoti smkx; }
+	function zle_application_mode_stop { echoti rmkx; }
 	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
 	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
@@ -165,9 +166,9 @@ setopt autopushd
 setopt correct
 
 # Correction setup
-CORRECT_IGNORE="[_|.]*"
+export CORRECT_IGNORE="[_|.]*"
 
 
 
 # Optional machine-dependent zsh configuration
-[[ -a $ZDOTDIR/.zshrcp ]] && source $ZDOTDIR/.zshrcp
+[[ -f $ZDOTDIR/.zshrcp ]] && source "$ZDOTDIR/.zshrcp"

@@ -1,3 +1,1 @@
-if [[ -a $ZDOTDIR/.zloginp ]] then
-  source $ZDOTDIR/.zloginp;
-fi
+[[ -f "$ZDOTDIR/.zloginp" ]] && source "$ZDOTDIR/.zloginp"
