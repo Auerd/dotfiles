@@ -81,7 +81,7 @@ add-zsh-hook -Uz precmd reset_broken_terminal
 
 # Autorehash for pacman
 if [[ -x $(command -v pacman) ]]; then
-	if ! [[ -f $PREFIX/var/cache/zsh/pacman ]] 
+	if ! [[ -e $PREFIX/var/cache/zsh/pacman ]] 
 	then
     printf "Warning you've not enabled zsh pacman hook yet.\n
 		Please, copy ~/.config/scripts/zsh.hook to current pacman's hooks directory"
