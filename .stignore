@@ -1,0 +1,7 @@
+.git
+lazy-lock.json
+alacritty.toml
+.p*
+.zsh*p
+*.zwc
+*.bak
