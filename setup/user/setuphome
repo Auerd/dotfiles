@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -eu
 
 echo "Setting up home directory"
 
@@ -7,12 +8,27 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FILES_DIR="$SCRIPT_DIR"/../..
 PATH=$PATH:$SCRIPT_DIR
 
+setup-alacritty() {
+  local mainconfdir="$1/alacritty"
+  local defaultconf="$mainconfdir/default.toml"
+  if ! [ -e "$mainconfdir" ] || ! [ -e "$defaultconf" ]; then
+    return 0;
+  fi
+  local mainconf="$mainconfdir/alacritty.toml"
+  touch "$mainconf" 
+  echo "import = [$defaultconf]" > "$mainconf"
+  return 0;
+}
+
+
 for file in "$FILES_DIR"/*; do
   case ${file##*/} in
     "setup")
       ;;
     "config")
-      ndlink "$file" "${XDG_CONFIG_HOME:-$HOME/.config}"
+      confdir="${XDG_CONFIG_HOME:-$HOME/.config}"
+      ndlink "$file" "$confdir" 
+      setup-alacritty "$confdir"
       ;;
     "local")
       [[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
@@ -23,3 +39,4 @@ for file in "$FILES_DIR"/*; do
       ;;
   esac
 done
+
