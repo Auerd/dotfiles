@@ -33,6 +33,7 @@ return {
         "xcompose",
         "yaml", "toml",
         "arduino",
+        "bash",
   		},
   	},
   },
