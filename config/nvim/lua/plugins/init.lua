@@ -24,6 +24,7 @@ return {
         "html", "css",
         "python",
         "c", "cpp",
+        "make",
         "xcompose",
         "yaml", "toml",
         "arduino",
