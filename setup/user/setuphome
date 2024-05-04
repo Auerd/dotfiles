@@ -22,7 +22,8 @@ setup-alacritty() {
 
 
 for file in "$FILES_DIR"/*; do
-  case ${file##*/} in
+  filename=${file##*/}
+  case $filename in
     "setup")
       ;;
     "config")
@@ -34,8 +35,11 @@ for file in "$FILES_DIR"/*; do
       [[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
       [[ -d "$file/state" ]] && ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
       ;;
+    "x"*)
+      [[ -e "$HOME/.$filename" ]] || cp "$file" "$HOME/.$filename"
+      ;;
     *)
-      nlink "$file" "$HOME/.${file##*/}"
+      nlink "$file" "$HOME/.$filename"
       ;;
   esac
 done
