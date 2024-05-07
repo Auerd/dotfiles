@@ -7,6 +7,8 @@ return {
     build = ":TSUpdate",
     event = { "VeryLazy", "BufReadPost", "BufWritePost", "BufNewFile" },
     init = function(plugin)
+      -- source: https://github.com/nvim-treesitter/nvim-treesitter/issues/655
+      vim.treesitter.language.register("bash", "zsh")
       require("lazy.core.loader").add_to_rtp(plugin)
       require("nvim-treesitter.query_predicates")
     end,
