@@ -46,7 +46,14 @@ return {
       sync_install = false,
       highlight = { enable = true },
       indent = { enable = true },
-      ensure_installed = "all",
+      ensure_installed = { 
+        "c", "cpp", 
+        "xcompose", 
+        "python",
+        "bash",
+        "xml", "toml", "yaml",
+        "arduino",
+      },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -58,7 +65,7 @@ return {
       },
       textobjects = {
         move = {
-          enable = true,
+          enable = false,
           goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
           goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
           goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
@@ -87,7 +94,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-    enabled = true,
+    enabled = false,
     opts = { mode = "cursor", max_lines = 3 },
     keys = {
       {
