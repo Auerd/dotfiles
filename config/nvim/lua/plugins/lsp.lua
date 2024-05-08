@@ -3,6 +3,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufWritePost", "BufNewFile" },
     config = function()
+      require"neodev".setup()
       local lspconfig = require "lspconfig"
       -- if you just want default config for the servers then put them in a table
       local servers = { "clangd", "bashls", "pyright", "cmake", "lua_ls" }
@@ -15,6 +16,9 @@ return {
       end
     end,
     dependencies = {
+      {
+        "folke/neodev.nvim",
+      },
       {
         "L3MON4D3/LuaSnip",
       },
