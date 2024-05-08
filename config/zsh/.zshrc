@@ -43,6 +43,7 @@ alias grep="grep --color=auto"
 alias yay="yay --sudoloop"
 alias yayy="yay -Syu --noconfirm"
 alias upg="yayy && sudo flatpak update -y"
+alias dots="$PREFIX/bin/git --git-dir=$HOME/dotfiles/.git --work-tree=$HOME/dotfiles"
 
 
 # Commands
