@@ -7,5 +7,8 @@ return {
     opts = {
       no_italic = is_termx,
     }
-  }
+  },
+  {
+    'projekt0n/github-nvim-theme',
+  },
 }
