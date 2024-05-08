@@ -46,14 +46,14 @@ return {
     ---@diagnostic disable-next-line: missing-fields
     opts = {
       sync_install = false,
-      highlight = { 
-        enable = true, 
+      highlight = {
+        enable = true,
         additional_vim_regex_highlighting = false,
       },
       indent = { enable = true },
-      ensure_installed = { 
-        "c", "cpp", 
-        "xcompose", 
+      ensure_installed = {
+        "c", "cpp",
+        "xcompose",
         "python",
         "bash",
         "xml", "toml", "yaml",
@@ -93,28 +93,5 @@ return {
       end
       require("nvim-treesitter.configs").setup(opts)
     end,
-  },
-
-  -- Show context of the current function
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-    enabled = false,
-    opts = { mode = "cursor", max_lines = 3 },
-    keys = {
-      {
-        "<leader>ut",
-        function()
-          local tsc = require("treesitter-context")
-          tsc.toggle()
-          if LazyVim.inject.get_upvalue(tsc.toggle, "enabled") then
-            LazyVim.info("Enabled Treesitter Context", { title = "Option" })
-          else
-            LazyVim.warn("Disabled Treesitter Context", { title = "Option" })
-          end
-        end,
-        desc = "Toggle Treesitter Context",
-      },
-    },
   },
 }
