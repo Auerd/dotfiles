@@ -4,12 +4,8 @@ size = 18
 [font.normal]
 family = "JetBrainsMono Nerd Font"
 
-[colors.primary]
-foreground = "#ced4df"
-background = "#0B0E14"
-
-[colors.normal]
-red = "#b33030"
-
 [window]
 opacity = 1
+
+[colors.primary]
+background = "#0a0c10"
