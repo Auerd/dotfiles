@@ -11,7 +11,7 @@ return {
       view = {
         side = "right",
         centralize_selection = true,
-        width = "10%",
+        width = "15%",
       }
     },
   }
