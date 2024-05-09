@@ -17,6 +17,11 @@ return {
     end,
     dependencies = {
       {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        config = true,
+      },
+      {
         "folke/neodev.nvim",
       },
       {
@@ -33,6 +38,7 @@ return {
         opts = function()
           local cmp = require "cmp"
           local luasnip = require "luasnip"
+          cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
           return {
             snippet = {
               expand = function(args)
