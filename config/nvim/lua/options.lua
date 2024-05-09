@@ -16,3 +16,4 @@ o.shiftwidth = 2
 o.laststatus = 3
 
 o.fcs = "eob: "
+cmd.autocmd "TermOpen * setlocal nonumber norelativenumber"
