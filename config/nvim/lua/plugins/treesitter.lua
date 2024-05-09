@@ -54,6 +54,8 @@ return {
       ensure_installed = {
         "c",
         "cpp",
+        "make",
+        "cmake",
         "xcompose",
         "python",
         "bash",
