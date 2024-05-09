@@ -1,8 +1,7 @@
 local cmd = vim.cmd
 local o = vim.o
 
-
-cmd.colorscheme("github_dark_high_contrast")
+cmd.colorscheme "github_dark_high_contrast"
 
 o.number = true
 

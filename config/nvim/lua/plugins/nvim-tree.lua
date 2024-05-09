@@ -12,7 +12,7 @@ return {
         side = "right",
         centralize_selection = true,
         width = "15%",
-      }
+      },
     },
-  }
+  },
 }
