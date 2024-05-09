@@ -1,25 +1,19 @@
-require "nvchad.options"
+local cmd = vim.cmd
+local o = vim.o
 
-local function open_nvim_tree(data)
+cmd.colorscheme "github_dark_high_contrast"
+o.termguicolors = true
 
-  -- buffer is a directory
-  local directory = vim.fn.isdirectory(data.file) == 1
+o.number = true
 
-  if not directory then
-    return
-  end
+-- Tabs
+o.softtabstop = 0
+o.expandtab = true
+o.smarttab = true
+o.shiftwidth = 2
 
-  -- create a new, empty buffer
-  vim.cmd.enew()
+-- Statusline
+o.laststatus = 3
 
-  -- wipe the directory buffer
-  vim.cmd.bw(data.buf)
-
-  -- change to the directory
-  vim.cmd.cd(data.file)
-
-  -- open the tree
-  require("nvim-tree.api").tree.open()
-end
-
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+o.fcs = "eob: "
+cmd.autocmd "TermOpen * setlocal nonumber norelativenumber"
