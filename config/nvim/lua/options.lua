@@ -16,4 +16,9 @@ o.shiftwidth = 2
 o.laststatus = 3
 
 o.fcs = "eob: "
-cmd.autocmd "TermOpen * setlocal nonumber norelativenumber"
+
+-- But vim.wo.number = false works for all buffers
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = { "*" },
+  command = "setlocal nonumber norelativenumber",
+})
