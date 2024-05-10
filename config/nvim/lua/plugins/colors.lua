@@ -1,11 +1,11 @@
-local is_termx = vim.env.TERMUX_VERSION ~= nil
+local no_italic = vim.g.no_italic
 
 return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
     opts = {
-      no_italic = is_termx,
+      no_italic = no_italic,
     },
   },
   {
@@ -14,8 +14,8 @@ return {
       require("github-theme").setup {
         options = {
           styles = {
-            comments = is_termx and "NONE" or "italic",
-            conditionals = is_termx and "NONE" or "italic",
+            comments = no_italic and "NONE" or "italic",
+            conditionals = no_italic and "NONE" or "italic",
           },
         },
       }
