@@ -17,5 +17,6 @@ export HISTFILE=$ZSH_CACHE_DIRECTORY/zhistory
 export ZDOTDIR=$HOME/.config/zsh
 [[ -n $XDG_CONFIG_HOME ]] && export ZDOTDIR=$XDG_CONFIG_HOME/zsh;
 export EDITOR=$PREFIX/bin/nvim
+export GPG_TTY="$(tty)"
 
 [[ -f $ZDOTDIR/.zshenvp ]] && source "$ZDOTDIR/.zshenvp";
