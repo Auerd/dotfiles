@@ -8,9 +8,9 @@ return {
     },
     name = "nvim-tree",
     opts = {
+      hijack_cursor = true,
       view = {
         side = "right",
-        centralize_selection = true,
         width = "15%",
       },
     },
