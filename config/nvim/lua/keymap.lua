@@ -11,8 +11,8 @@ map("n", "<leader>e", function()
   require("nvim-tree.api").tree.toggle()
 end, { desc = "Toggle nvim-tree" })
 
-map({ "n", "i" }, "<Tab>", "<cmd>bnext<cr>", { desc = "Go to next buffer" })
-map({ "n", "i" }, "<S-Tab>", "<cmd>bprev<cr>", { desc = "Go to previous buffer" })
+map("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Go to next buffer" })
+map("n", "<S-Tab>", "<cmd>bprev<cr>", { desc = "Go to previous buffer" })
 map("n", "<leader>r", "<cmd>bw<cr><cmd>bnext<cr>", { desc = "Delete current buffer and move to next" })
 
 map("t", "<C-x>", "<C-\\><C-n>", { desc = "Switch to normal mode" })
