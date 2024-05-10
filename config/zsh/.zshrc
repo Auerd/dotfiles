@@ -53,7 +53,8 @@ mkcdir()
     cd -P -- "$1" || return 1
 }
 
-
+GPG_TTY="$(/bin/tty)"
+export GPG_TTY
 
 # Plugins
 source "$ZDOTDIR/plugins/antigen.zsh"
