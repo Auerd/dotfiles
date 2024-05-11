@@ -36,6 +36,8 @@ fi
 
 
 # Aliases 
+# source: https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
+DOTS_DIR=$(git -C "$ZDOTDIR" rev-parse --show-toplevel)
 alias ls="ls --color=auto" 
 alias la="ls -A"
 alias ll="ls -lA"
@@ -43,7 +45,7 @@ alias grep="grep --color=auto"
 alias yay="yay --sudoloop"
 alias yayy="yay -Syu --noconfirm"
 alias upg="yayy && sudo flatpak update -y"
-alias dots="$PREFIX/bin/git --git-dir=$HOME/dotfiles/.git --work-tree=$HOME/dotfiles"
+alias dots="git -C \"$DOTS_DIR\""
 
 
 # Commands
