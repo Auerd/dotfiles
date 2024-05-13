@@ -4,6 +4,7 @@ set -eu
 
 echo "Setting up home directory"
 
+# source: https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FILES_DIR="$SCRIPT_DIR"/../..
 PATH=$PATH:$SCRIPT_DIR
