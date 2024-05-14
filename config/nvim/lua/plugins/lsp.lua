@@ -5,7 +5,6 @@ return {
     config = function()
       require("neodev").setup()
       local lspconfig = require "lspconfig"
-      -- if you just want default config for the servers then put them in a table
       local servers = { "clangd", "bashls", "pyright", "cmake", "lua_ls" }
       for _, lsp in ipairs(servers) do
         if lsp == "bashls" then
@@ -32,6 +31,9 @@ return {
       },
       {
         "saadparwaiz1/cmp_luasnip",
+      },
+      {
+        "hrsh7th/cmp-path",
       },
       {
         "hrsh7th/nvim-cmp",
@@ -75,6 +77,7 @@ return {
             sources = {
               { name = "nvim_lsp" },
               { name = "luasnip" },
+              { name = "path" },
             },
           }
         end,
