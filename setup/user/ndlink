@@ -3,7 +3,6 @@
 set -e -u
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ME=${0##*/}
 PATH=$PATH:$SCRIPT_DIR
 
 if [[ -e $2 ]] && [[ ! -d $2 ]] || [[ -L $2 ]]; then
