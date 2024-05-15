@@ -11,6 +11,10 @@ map("n", "<leader>e", function()
   require("nvim-tree.api").tree.toggle()
 end, { desc = "Toggle nvim-tree" })
 
+map("n", "<leader>a", function()
+  return ":IncRename " .. vim.fn.expand "<cword>"
+end, { desc = "Lsp rename", expr = true })
+
 map("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Go to next buffer" })
 map("n", "<S-Tab>", "<cmd>bprev<cr>", { desc = "Go to previous buffer" })
 
