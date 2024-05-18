@@ -15,7 +15,6 @@ set $mod Mod4
 # is used in the bar {} block below.
 font pango:JetBrainsMono NF Light 12
 
-#exec_always --no-startup-id killall polybar
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -54,7 +53,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # picom
-exec_always /bin/bash $HOME/.config/scripts/picomsel.sh
+exec /bin/bash "${XDG_CONFIG_HOME:-$HOME/.config}/scripts/picomsel.sh"
 
 # gaps
 gaps inner 0
@@ -68,7 +67,9 @@ default_floating_border none
 # default container layout
 workspace_layout tabbed
 
-
+# kill picom
+bindsym $mod+p exec killall picom
+bindsym $mod+Shift+p exec /bin/bash "${XDG_CONFIG_HOME:-$HOME/.config}/scripts/picomsel.sh"
 
 # start a terminal
 bindsym $mod+Shift+Return exec kitty
