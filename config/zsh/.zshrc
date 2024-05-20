@@ -1,4 +1,12 @@
+# sources: 
+#   https://wiki.archlinux.org/title/Zsh
+#   https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
 autoload -Uz compinit promptinit add-zsh-hook 
+
+if ! [[ -d $ZSH_CACHE_DIRECTORY ]]; then
+  [[ -e "$ZSH_CACHE_DIRECTORY" ]] && rm "$ZSH_CACHE_DIRECTORY";
+  mkdir "$ZSH_CACHE_DIRECTORY";
+fi
 
 compinit -d "$ZSH_CACHE_DIRECTORY/zcompdump-$ZSH_VERSION" 
 
@@ -16,6 +24,7 @@ set_prompt(){
 } 
 
 if [[ -f $ZDOTDIR/.prompt ]]; then 
+# shellcheck source=/dev/null
   source "$ZDOTDIR/.prompt"; 
 else 
   set_prompt 
@@ -23,9 +32,10 @@ else
 fi 
 
 if [[ -f $ZDOTDIR/.rprompt ]]; then 
+# shellcheck source=/dev/null
   source "$ZDOTDIR/.rprompt"; 
 else 
-  RPROMPT=''; 
+  export RPROMPT=''; 
 fi 
 
 
@@ -37,14 +47,16 @@ fi
 
 # Aliases 
 # source: https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
-DOTS_DIR=$(git -C "$ZDOTDIR" rev-parse --show-toplevel)
 alias ls="ls --color=auto" 
 alias la="ls -A"
 alias ll="ls -lA"
 alias grep="grep --color=auto"
 alias yay="yay --sudoloop"
 alias yayy="yay -Syu --noconfirm"
-alias dots="git -C \"$DOTS_DIR\""
+if command -v git &> /dev/null; then
+  DOTS=$(git -C "$ZDOTDIR" rev-parse --show-toplevel)
+  alias dots="git -C \"\$DOTS\""
+fi
 
 
 # Commands
@@ -54,28 +66,55 @@ mkcdir()
     cd -P -- "$1" || return 1
 }
 
-GPG_TTY="$(/bin/tty)"
-export GPG_TTY
+
+
 
 # Plugins
-source "$ZDOTDIR/plugins/antigen.zsh"
 
-antigen use oh-my-zsh
-antigen bundles <<EOBUNDLES
-	git 
-	command-not-found
-	zsh-users/zsh-syntax-highlighting
-	zsh-users/zsh-autosuggestions
+function get-antigen-path() {
+  local userpath=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
+  local systempath=${PREFIX:-/usr}/share/zsh/share
+  local dir=$systempath
+  if ! [ -f "$systempath/antigen.zsh" ]; then
+    dir=$userpath
+    if ! [ -f "$userpath/antigen.zsh" ]; then
+      echo "$(tput bold)Warning!$(tput sgr0) Installing antigen.zsh plugin to XDG_DATA_HOME directory." 
+      echo "This procedure will be executed only once!"
+      echo "If you want to update antigen.zsh regulary install it via your package manager"
+      mkdir -p "$userpath"
+      if command -v curl &> /dev/null; then
+        curl -L git.io/antigen > "$userpath/antigen.zsh"
+      elif command -v wget &> /dev/null; then
+        wget -O git.io/antigen > "$userpath/antigen.zsh"
+      else
+        echo "Please install antigen plugin, curl or wget from your package manager"
+        return 1
+      fi
+    fi
+  fi
+  echo "$dir/antigen.zsh"
+  return 0
+}
+
+# shellcheck source=/dev/null
+if source "$(get-antigen-path)"; then
+  antigen use oh-my-zsh
+  antigen bundles <<EOBUNDLES
+    git 
+    command-not-found
+    zsh-users/zsh-syntax-highlighting
+    zsh-users/zsh-autosuggestions
 EOBUNDLES
-antigen apply
+  antigen apply
+fi
 
-ZSH_AUTOSUGGEST_STRATEGY=()
+export ZSH_AUTOSUGGEST_STRATEGY=()
 
 
 
 # Prevention of terminal break
 function reset_broken_terminal () {
-	printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
+  printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
 }
 
 add-zsh-hook -Uz precmd reset_broken_terminal
@@ -83,30 +122,29 @@ add-zsh-hook -Uz precmd reset_broken_terminal
 
 
 # Autorehash for pacman
-if [[ -x $(command -v pacman) ]]; then
-	if ! [[ -e $PREFIX/var/cache/zsh/pacman ]] 
-	then
-    printf "Warning you've not enabled zsh pacman hook yet.\n
-		Please, copy ~/.config/scripts/zsh.hook to current pacman's hooks directory"
-	else
-		zshcache_time="$(date +%s%N)"
-		
-		rehash_precmd() {
+# source: https://wiki.archlinux.org/title/Zsh#On-demand_rehash
+if command -v pacman &> /dev/null; then
+  if [[ -e $PREFIX/var/cache/zsh/pacman ]] 
+  then
+    zshcache_time="$(date +%s%N)"
+    
+    rehash_precmd() {
       local paccache_time
-		  paccache_time="$(date -r "$PREFIX/var/cache/zsh/pacman" +%s%N)"
-		  if (( zshcache_time < paccache_time )); then
-		    rehash
-		    zshcache_time="$paccache_time"
-		  fi
-		}
-		
-		add-zsh-hook -Uz precmd rehash_precmd
-	fi
+      paccache_time="$(date -r "$PREFIX/var/cache/zsh/pacman" +%s%N)"
+      if (( zshcache_time < paccache_time )); then
+        rehash
+        zshcache_time="$paccache_time"
+      fi
+    }
+    
+    add-zsh-hook -Uz precmd rehash_precmd
+  fi
 fi
 
 
 
 # Keybinding
+# source: https://wiki.archlinux.org/title/Zsh#Key_bindings
 typeset -g -A key
 
 key[Home]="${terminfo[khome]}"
@@ -139,12 +177,12 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[Control-Left]}"  ]] && bindkey -- "${key[Control-Left]}"  backward-word
 [[ -n "${key[Control-Right]}" ]] && bindkey -- "${key[Control-Right]}" forward-word
 
-if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-	autoload -Uz add-zle-hook-widget
-	function zle_application_mode_start { echoti smkx; }
-	function zle_application_mode_stop { echoti rmkx; }
-	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+if ((${+terminfo[smkx]} && ${+terminfo[rmkx]})); then
+  autoload -Uz add-zle-hook-widget
+  function zle_application_mode_start { echoti smkx; }
+  function zle_application_mode_stop { echoti rmkx; }
+  add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+  add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
 
@@ -157,6 +195,7 @@ function clear-screen-and-scrollback() {
 
 zle -N clear-screen-and-scrollback
 bindkey '^L' clear-screen-and-scrollback
+
 
 
 
