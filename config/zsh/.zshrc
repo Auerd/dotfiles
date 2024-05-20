@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 # sources: 
 #   https://wiki.archlinux.org/title/Zsh
 #   https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
@@ -71,33 +72,31 @@ mkcdir()
 
 # Plugins
 
-function get-antigen-path() {
-  local userpath=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
-  local systempath=${PREFIX:-/usr}/share/zsh/share
-  local dir=$systempath
-  if ! [ -f "$systempath/antigen.zsh" ]; then
-    dir=$userpath
-    if ! [ -f "$userpath/antigen.zsh" ]; then
-      echo "$(tput bold)Warning!$(tput sgr0) Installing antigen.zsh plugin to XDG_DATA_HOME directory." 
-      echo "This procedure will be executed only once!"
-      echo "If you want to update antigen.zsh regulary install it via your package manager"
-      mkdir -p "$userpath"
+function source-antigen() {
+  local dir=${PREFIX:-/usr}/share/zsh/share
+  if ! [ -f "$dir/antigen.zsh" ]; then
+    dir=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
+    if ! [ -f "$dir/antigen.zsh" ]; then
+      echo "Installing antigen.zsh plugin to XDG_DATA_HOME directory." 
+      echo "$(tput bold)Warning!$(tput sgr0) This procedure will be executed only once!"
+      echo "If you want to update antigen.zsh regulary, then install it via your package manager"
+      mkdir -p "$dir"
       if command -v curl &> /dev/null; then
-        curl -L git.io/antigen > "$userpath/antigen.zsh"
+        curl -sL git.io/antigen > "$dir/antigen.zsh"
       elif command -v wget &> /dev/null; then
-        wget -O git.io/antigen > "$userpath/antigen.zsh"
+        wget -qO git.io/antigen > "$dir/antigen.zsh"
       else
         echo "Please install antigen plugin, curl or wget from your package manager"
         return 1
       fi
     fi
   fi
-  echo "$dir/antigen.zsh"
+# shellcheck source=/dev/null
+  source "$dir/antigen.zsh"
   return 0
 }
 
-# shellcheck source=/dev/null
-if source "$(get-antigen-path)"; then
+if source-antigen; then
   antigen use oh-my-zsh
   antigen bundles <<EOBUNDLES
     git 
@@ -209,4 +208,5 @@ export CORRECT_IGNORE="[_|.]*"
 
 
 # Optional machine-dependent zsh configuration
+# shellcheck source=/dev/null
 [[ -f $ZDOTDIR/.zshrcp ]] && source "$ZDOTDIR/.zshrcp"
