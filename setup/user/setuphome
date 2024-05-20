@@ -4,44 +4,65 @@ set -eu
 
 echo "Setting up home directory"
 
-# source: https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+# source: https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 FILES_DIR="$SCRIPT_DIR"/../..
 PATH=$PATH:$SCRIPT_DIR
 
-setup-alacritty() {
-  local mainconfdir="$1/alacritty"
-  local defaultconf="$mainconfdir/default.toml"
-  if ! [ -e "$mainconfdir" ] || ! [ -e "$defaultconf" ]; then
-    return 0;
+fc-list | grep "JetBrainsMono Nerd Font," &>/dev/null
+font_installed=$?
+
+function setup-alacritty() {
+  local confdir="$1/alacritty"
+  local defaultconf="$confdir/default.toml"
+  if ! [ -f "$defaultconf" ]; then
+    return 1
   fi
-  local mainconf="$mainconfdir/alacritty.toml"
-  touch "$mainconf" 
-  echo "import = [$defaultconf]" > "$mainconf"
-  return 0;
+  local mainconf="$confdir/alacritty.toml"
+  touch "$mainconf"
+  echo "import = [$defaultconf]" >"$mainconf"
+  if $font_installed; then
+    return 0
+  fi
+  printf "\n[font.normal]\nfamily = monospace" >"$mainconf"
+  printf "Warning! Alacritty will use monospace font as JetBrainsMono NF is not installed"
 }
 
+function setup-kitty() {
+  local confdir="$1/kitty"
+  local defaultconf="$confdir/kitty.conf"
+  if ! [ -f "$defaultconf" ]; then
+    return 1
+  fi
+  local mainconf="$confdir/custom.conf"
+  touch "$mainconf"
+  if $font_installed; then
+    return 0
+  fi
+  printf "font_family   monospace" >"$mainconf"
+  printf "Warning! Kitty will use monospace font as JetBrainsMono NF is not installed"
+  return 0
+}
 
 for file in "$FILES_DIR"/*; do
   filename=${file##*/}
   case $filename in
-    "setup")
-      ;;
-    "config")
-      confdir="${XDG_CONFIG_HOME:-$HOME/.config}"
-      ndlink "$file" "$confdir" 
-      setup-alacritty "$confdir"
-      ;;
-    "local")
-      [[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
-      [[ -d "$file/state" ]] && ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
-      ;;
-    "x"*)
-      [[ -e "$HOME/.$filename" ]] || cp "$file" "$HOME/.$filename"
-      ;;
-    *)
-      nlink "$file" "$HOME/.$filename"
-      ;;
+  "setup") ;;
+  "config")
+    confdir="${XDG_CONFIG_HOME:-$HOME/.config}"
+    ndlink "$file" "$confdir"
+    setup-alacritty "$confdir"
+    setup-kitty "$confdir"
+    ;;
+  "local")
+    [[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
+    [[ -d "$file/state" ]] && ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
+    ;;
+  "x"*)
+    [[ -e "$HOME/.$filename" ]] || cp "$file" "$HOME/.$filename"
+    ;;
+  *)
+    nlink "$file" "$HOME/.$filename"
+    ;;
   esac
 done
-
