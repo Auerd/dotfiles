@@ -25,3 +25,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
   pattern = { "*" },
   command = "setlocal nonumber norelativenumber",
 })
+
+-- Keymap
+vim.o.timeout = true
+vim.o.timeoutlen = 300
