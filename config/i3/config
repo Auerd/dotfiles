@@ -72,8 +72,7 @@ bindsym $mod+p exec /bin/bash "${XDG_CONFIG_HOME:-$HOME/.config}/i3/disablecompo
 bindsym $mod+Shift+p exec /bin/bash "${XDG_CONFIG_HOME:-$HOME/.config}/i3/enablecompose.sh"
 
 # start a terminal
-bindsym $mod+Shift+Return exec kitty
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec kitty &>/dev/null || i3-sensible-terminal
 
 # screenshot
 bindsym --release Print exec flameshot gui

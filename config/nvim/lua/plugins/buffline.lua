@@ -6,6 +6,7 @@ return {
       "nvim-tree/nvim-web-devicons",
       "famiu/bufdelete.nvim",
     },
+    event = { "BufReadPost", "BufWritePost", "BufNewFile" },
     config = true,
     opts = function()
       local bufferline = require "bufferline"

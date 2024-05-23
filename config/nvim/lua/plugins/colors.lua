@@ -2,6 +2,15 @@ local no_italic = vim.g.no_italic
 
 return {
   {
+    "raddari/last-color.nvim",
+    config = function()
+      vim.cmd.colorscheme(require("last-color").recall())
+    end,
+  },
+  {
+    "iagorrr/noctis-high-contrast.nvim",
+  },
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     opts = {
