@@ -2,12 +2,11 @@
 
 set -e -u
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 PATH=$PATH:$SCRIPT_DIR
 
 if [[ -e $2 ]] && [[ ! -d $2 ]] || [[ -L $2 ]]; then
-  if ask "$2 is not a directory. Do you want to replace it? (y/n) ";
-  then
+  if ask "$2 is not a directory. Do you want to replace it? (y/n) "; then
     echo "Deleting $2 ..."
     rm -rf "$2"
   else
@@ -16,9 +15,9 @@ if [[ -e $2 ]] && [[ ! -d $2 ]] || [[ -L $2 ]]; then
   fi
 fi
 
-mkdir -p $2
+mkdir -p "$2"
 echo "Linking all files and dirs in $1 to $2..."
 for file in "$1"/*; do
   nlink "$file" "$2/${file##*/}"
 done
-exit 0;
+exit 0
