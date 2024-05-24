@@ -72,32 +72,29 @@ mkcdir()
 
 # Plugins
 
-function source-antigen() {
-  local dir=${PREFIX:-/usr}/share/zsh/share
+dir=""
+dir=${PREFIX:-/usr}/share/zsh/shareo
+if ! [ -f "$dir/antigen.zsh" ]; then
+  dir=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
   if ! [ -f "$dir/antigen.zsh" ]; then
-    dir=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
-    if ! [ -f "$dir/antigen.zsh" ]; then
-      echo "Installing antigen.zsh plugin to XDG_DATA_HOME directory." 
-      echo "$(tput bold)Warning!$(tput sgr0) This procedure will be executed only once!"
-      echo "If you want to update antigen.zsh regulary, then install it via your package manager"
-      echo "Usually it is not necessary because updates of this plugin are very rare"
-      mkdir -p "$dir"
-      if command -v curl &> /dev/null; then
-        curl -sL git.io/antigen > "$dir/antigen.zsh"
-      elif command -v wget &> /dev/null; then
-        wget -qO git.io/antigen > "$dir/antigen.zsh"
-      else
-        echo "Please install antigen plugin, curl or wget from your package manager and restart the shell"
-        return 1
-      fi
+    echo "Installing antigen.zsh plugin to XDG_DATA_HOME directory." 
+    echo "$(tput bold)Warning!$(tput sgr0) This procedure will be executed only once!"
+    echo "If you want to update antigen.zsh regulary, then install it via your package manager"
+    mkdir -p "$dir"
+    if command -v curl &> /dev/null; then
+      curl -sL git.io/antigen > "$dir/antigen.zsh"
+    elif command -v wget &> /dev/null; then
+      wget -qO git.io/antigen > "$dir/antigen.zsh"
+    else
+      echo "Please install antigen plugin, curl or wget from your package manager"
+      dir="" 
     fi
   fi
+fi
+
+if [ -n "$dir" ]; then
 # shellcheck source=/dev/null
   source "$dir/antigen.zsh"
-  return 0
-}
-
-if source-antigen; then
   antigen use oh-my-zsh
   antigen bundles <<EOBUNDLES
     git 
