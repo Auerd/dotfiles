@@ -3,6 +3,7 @@ return {
     "akinsho/bufferline.nvim",
     version = "*",
     dependencies = {
+      "raddari/last-color.nvim",
       "nvim-tree/nvim-web-devicons",
       "famiu/bufdelete.nvim",
     },
