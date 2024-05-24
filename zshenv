@@ -1,7 +1,4 @@
-# source: https://wiki.archlinux.org/title/Zsh#Configuring_$PATH
-typeset -U path PATH
-path=("$HOME/.local/bin" "$path")
-export PATH
+export PATH="$HOME/.local/bin:$PATH"
 
 [[ -f $HOME/.zshenvp ]] && source "$HOME/.zshenvp"
 
