@@ -9,7 +9,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 FILES_DIR="$SCRIPT_DIR"/../..
 PATH=$PATH:$SCRIPT_DIR
 
-font_installed="0"
+font_installed=0
 fc-list | grep "JetBrainsMono Nerd Font," &>/dev/null || font_installed=$?
 
 function setup-alacritty() {
@@ -21,7 +21,7 @@ function setup-alacritty() {
   local mainconf="$confdir/alacritty.toml"
   touch "$mainconf"
   echo "import = [$defaultconf]" >"$mainconf"
-  if $font_installed; then
+  if [[ $font_installed -eq 0 ]]; then
     return 0
   fi
   printf "\n[font.normal]\nfamily = monospace" >"$mainconf"
@@ -36,7 +36,7 @@ function setup-kitty() {
   fi
   local mainconf="$confdir/custom.conf"
   touch "$mainconf"
-  if $font_installed; then
+  if [[ $font_installed -eq 0 ]]; then
     return 0
   fi
   printf "font_family   monospace" >"$mainconf"
