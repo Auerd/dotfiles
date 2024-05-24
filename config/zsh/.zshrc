@@ -72,7 +72,6 @@ mkcdir()
 
 # Plugins
 
-dir=""
 dir=${PREFIX:-/usr}/share/zsh/shareo
 if ! [ -f "$dir/antigen.zsh" ]; then
   dir=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
