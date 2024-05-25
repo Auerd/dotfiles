@@ -63,6 +63,8 @@ return {
         "toml",
         "yaml",
         "arduino",
+        "java",
+        "javascript",
       },
       incremental_selection = {
         enable = true,
