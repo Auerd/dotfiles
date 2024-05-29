@@ -11,8 +11,8 @@ map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
 
 -- Ok, I don't know how it works...
 map("n", "<leader>e", function()
-  return ":Neotree position=right toggle=true"
-end, { desc = "Toggle dir-tree", expr = true })
+  return ":Neotree position=right toggle=true<CR>"
+end, { desc = "Toggle neo-tree", expr = true })
 
 -- But you can use this workaround
 map("n", "<leader>lr", function()
