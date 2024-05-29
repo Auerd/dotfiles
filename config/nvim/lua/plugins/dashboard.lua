@@ -28,7 +28,7 @@ return {
           center = {
             {
               action = "Neotree position=right toggle=true",
-              desc = " Toggle neotree",
+              desc = " Toggle neo-tree",
               icon = "󰔱",
               key = "t",
             },
