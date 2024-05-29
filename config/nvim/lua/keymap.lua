@@ -9,9 +9,10 @@ map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
 
+-- Ok, I don't know how it works...
 map("n", "<leader>e", function()
-  require("nvim-tree.api").tree.toggle()
-end, { desc = "Toggle nvim-tree" })
+  return ":Neotree position=right toggle=true"
+end, { desc = "Toggle dir-tree", expr = true })
 
 -- But you can use this workaround
 map("n", "<leader>lr", function()
