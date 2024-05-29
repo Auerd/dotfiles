@@ -27,8 +27,8 @@ return {
           header = vim.split(art, "\n"),
           center = {
             {
-              action = "NvimTreeToggle",
-              desc = " Toggle nvim-tree",
+              action = "Neotree position=right toggle=true",
+              desc = " Toggle neotree",
               icon = "󰔱",
               key = "t",
             },
