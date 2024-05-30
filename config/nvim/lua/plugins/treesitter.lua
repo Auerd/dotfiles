@@ -65,6 +65,11 @@ return {
         "arduino",
         "java",
         "javascript",
+        "gitcommit",
+        "git_config",
+        "git_rebase",
+        "gitattributes",
+        "gitignore",
       },
       incremental_selection = {
         enable = true,
