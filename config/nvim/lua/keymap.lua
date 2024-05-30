@@ -17,6 +17,13 @@ map("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Go to next buffer" })
 map("n", "<S-Tab>", "<cmd>bprev<cr>", { desc = "Go to previous buffer" })
 -- }}}
 
+-- View navigation {{{
+map("n", "<A-h>", "zh", { desc = "Move view to the left" })
+map("n", "<A-j>", "<C-e>", { desc = "Move view down" })
+map("n", "<A-k>", "<C-y>", { desc = "Move view up" })
+map("n", "<A-l>", "zl", { desc = "Move view to the right" })
+-- }}}
+
 -- Neotree toggle {{{
 -- But you can use this workaround
 map("n", "<leader>e", function()
