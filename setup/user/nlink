@@ -2,15 +2,30 @@
 
 set -eu
 
+# Prints the file and the directory it is in if last is provided
+format() {
+  name=${1##*/}
+  dir=${1%"$name"}
+  dir=${dir%/}
+  dir=${dir##*/}
+  if [ -z "$dir" ]; then
+    echo "$name"
+  else
+    echo "$dir/$name"
+  fi
+}
+
+formatted1=$(format "$1")
+formatted2=$(format "$2")
 if [[ -e $2 ]] || [[ -L $2 ]]; then
-  if ask "File $2 exists. Do you want to replace it? (y/n) "; then
-    echo "Deleting $2 ..."
+  if ask "File $formatted2 exists. Do you want to replace it? (y/n) "; then
+    echo "Deleting $formatted2 ..."
     rm -rf "$2"
   else
     echo "Skipping..."
     exit 0
   fi
 fi
-echo "Linking $1 to $2..."
+echo "Linking $formatted1 to $formatted2..."
 ln -sr "$1" "$2"
 exit 0
