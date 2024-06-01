@@ -64,11 +64,7 @@ end, { desc = "Lsp definitions" })
 
 -- Numbers toggle {{{
 map("n", "<leader>nn", function()
-  if vim.o.number then
-    vim.cmd.set "nonumber"
-  else
-    vim.cmd.set "number"
-  end
+  vim.opt_local.number = not vim.o.number
 end, { desc = "Toggle lines number" })
 -- }}}
 
