@@ -36,6 +36,7 @@ return {
           end
         end,
       },
+      "raddari/last-color.nvim",
     },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     keys = {
@@ -90,7 +91,6 @@ return {
         },
       },
     },
-    ---@param opts TSConfig
     config = function(_, opts)
       if type(opts.ensure_installed) == "table" then
         ---@type table<string, boolean>
