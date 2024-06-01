@@ -1,13 +1,11 @@
 #!/bin/bash
 
-format() {
-  name=${1##*/}
-  dir=${1%"$name"}
-  dir=${dir%/}
-  dir=${dir##*/}
-  if [ -z "$dir" ]; then
-    echo "$name"
-  else
-    echo "$dir/$name"
-  fi
-}
+name=${1##*/}
+dir=${1%"$name"}
+dir=${dir%/}
+dir=${dir##*/}
+if [ -z "$dir" ]; then
+  echo "$name"
+else
+  echo "$dir/$name"
+fi
