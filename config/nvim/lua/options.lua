@@ -17,12 +17,6 @@ o.laststatus = 3
 -- End of buffer character
 o.fcs = "eob: "
 
--- But "vim.wo.number = false" works for all buffers
-vim.api.nvim_create_autocmd("TermOpen", {
-  pattern = { "*" },
-  command = "setlocal nonumber norelativenumber",
-})
-
 -- Keymap
-vim.o.timeout = true
-vim.o.timeoutlen = 300
+o.timeout = true
+o.timeoutlen = 300

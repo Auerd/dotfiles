@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.g.no_italic = vim.env.TERMUX_VERSION ~= nil ---@type boolean
 
-require "keymap"
 require "options"
+require "autocmds"
+require "keymap"
 require("lazy").setup "plugins"
