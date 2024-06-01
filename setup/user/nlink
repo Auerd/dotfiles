@@ -2,22 +2,15 @@
 
 set -eu
 
-# Prints the file and the directory it is in if last is provided
-format() {
-  name=${1##*/}
-  dir=${1%"$name"}
-  dir=${dir%/}
-  dir=${dir##*/}
-  if [ -z "$dir" ]; then
-    echo "$name"
-  else
-    echo "$dir/$name"
-  fi
-}
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+PATH=$PATH:$SCRIPT_DIR
 
+# Prints the file and the directory it is in if last is provided
 formatted1=$(format "$1")
 formatted2=$(format "$2")
-if [[ -e $2 ]] || [[ -L $2 ]]; then
+if [[ $(realpath "$1") = $(realpath "$2") ]]; then
+  echo "$formatted1 is already linked to $formatted2. Skipping..."
+elif [[ -e $2 ]]; then
   if ask "File $formatted2 exists. Do you want to replace it? (y/n) "; then
     echo "Deleting $formatted2 ..."
     rm -rf "$2"
@@ -26,6 +19,7 @@ if [[ -e $2 ]] || [[ -L $2 ]]; then
     exit 0
   fi
 fi
+
 echo "Linking $formatted1 to $formatted2..."
 ln -sr "$1" "$2"
 exit 0
