@@ -53,7 +53,7 @@ alias la="ls -A"
 alias ll="ls -lA"
 alias grep="grep --color=auto"
 alias yay="yay --sudoloop"
-alias yayy="yay -Syu --noconfirm"
+alias yayy="time yay -Syu --noconfirm"
 if command -v git &> /dev/null; then
   DOTS=$(git -C "$ZDOTDIR" rev-parse --show-toplevel)
   alias dots="git -C \"\$DOTS\""
@@ -201,7 +201,7 @@ setopt correct
 
 # Correction setup
 export CORRECT_IGNORE="[_|.]*"
-
+export TIMEFMT="%U user %S system %P cpu %*E total"
 
 
 # Optional machine-dependent zsh configuration
