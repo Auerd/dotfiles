@@ -1,7 +1,8 @@
 #!/bin/bash
 
-name=${1##*/}
-dir=${1%"$name"}
+path=$(realpath "$1")
+name=${path##*/}
+dir=${path%"$name"}
 dir=${dir%/}
 dir=${dir##*/}
 if [ -z "$dir" ]; then
