@@ -7,4 +7,7 @@ return {
       char = "┃",
     },
   },
+  dependencies = {
+    "raddari/last-color.nvim",
+  },
 }
