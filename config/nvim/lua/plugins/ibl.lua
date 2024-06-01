@@ -6,6 +6,20 @@ return {
     indent = {
       char = "┃",
     },
+    exclude = {
+      filetypes = {
+        "lspinfo",
+        "packer",
+        "checkhealth",
+        "help",
+        "man",
+        "gitcommit",
+        "TelescopePrompt",
+        "TelescopeResults",
+        "",
+        "dashboard",
+      },
+    },
   },
   dependencies = {
     "raddari/last-color.nvim",
