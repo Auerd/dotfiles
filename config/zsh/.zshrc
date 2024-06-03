@@ -201,7 +201,7 @@ setopt correct
 
 # Correction setup
 export CORRECT_IGNORE="[_|.]*"
-export TIMEFMT="%U user %S system %P cpu %*E total"
+export TIMEFMT="%U user %S system %P cpu %E(%*E) total"
 
 
 # Optional machine-dependent zsh configuration
