@@ -201,7 +201,8 @@ setopt correct
 
 # Correction setup
 export CORRECT_IGNORE="[_|.]*"
-export TIMEFMT="user %U
+export TIMEFMT="
+user %U
 system %S
 cpu %P
 total %E(%*E)"
