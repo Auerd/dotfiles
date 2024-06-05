@@ -52,8 +52,8 @@ alias ls="ls --color=auto"
 alias la="ls -A"
 alias ll="ls -lA"
 alias grep="grep --color=auto"
-alias yay="yay --sudoloop"
-alias yayy="time yay -Syu --noconfirm"
+alias yay="time yay --sudoloop"
+alias yayy="yay -Syu --noconfirm"
 if command -v git &> /dev/null; then
   DOTS=$(git -C "$ZDOTDIR" rev-parse --show-toplevel)
   alias dots="git -C \"\$DOTS\""
