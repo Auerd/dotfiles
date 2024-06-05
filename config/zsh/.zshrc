@@ -54,9 +54,12 @@ alias ll="ls -lA"
 alias grep="grep --color=auto"
 alias yay="time yay --sudoloop"
 alias yayy="yay -Syu --noconfirm"
-if command -v git &> /dev/null; then
+trustfile="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/notgitrepo}"
+if ! [ -e "$trustfile" ] && command -v git &> /dev/null && git -C "$ZDOTDIR" rev-parse; then
   DOTS=$(git -C "$ZDOTDIR" rev-parse --show-toplevel)
   alias dots="git -C \"\$DOTS\""
+else
+  touch "$trustfile"
 fi
 
 
