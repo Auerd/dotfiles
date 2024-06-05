@@ -54,6 +54,8 @@ alias ll="ls -lA"
 alias grep="grep --color=auto"
 alias yay="time yay --sudoloop"
 alias yayy="yay -Syu --noconfirm"
+alias moshm="mosh --ssh='ssh -p 8022'"
+alias ssh="ssh -p 8022"
 trustfile="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/notgitrepo}"
 if ! [ -e "$trustfile" ] && command -v git &> /dev/null && git -C "$ZDOTDIR" rev-parse; then
   DOTS=$(git -C "$ZDOTDIR" rev-parse --show-toplevel)
