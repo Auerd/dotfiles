@@ -3,7 +3,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufWritePost", "BufNewFile" },
     config = function()
-      require("neodev").setup()
+      require("lazydev").setup()
       local lspconfig = require "lspconfig"
       local servers = { "clangd", "bashls", "pyright", "cmake", "lua_ls" }
       for _, lsp in ipairs(servers) do
@@ -21,7 +21,15 @@ return {
         config = true,
       },
       {
-        "folke/neodev.nvim",
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+          library = {
+            -- See the configuration section for more details
+            -- Load luvit types when the `vim.uv` word is found
+            { path = "luvit-meta/library", words = { "vim%.uv" } },
+          },
+        },
       },
       {
         "L3MON4D3/LuaSnip",
