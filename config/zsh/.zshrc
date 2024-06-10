@@ -209,8 +209,8 @@ export CORRECT_IGNORE="[_|.]*"
 export TIMEFMT="
 user %U
 system %S
-cpu %P
 total %E(%*E)"
+cpu %P
 
 
 # Optional machine-dependent zsh configuration
