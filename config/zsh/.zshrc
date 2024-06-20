@@ -6,7 +6,7 @@ autoload -Uz compinit promptinit add-zsh-hook
 
 if ! [[ -d $ZSH_CACHE_DIRECTORY ]]; then
   [[ -e "$ZSH_CACHE_DIRECTORY" ]] && rm "$ZSH_CACHE_DIRECTORY";
-  mkdir "$ZSH_CACHE_DIRECTORY";
+  mkdir -p "$ZSH_CACHE_DIRECTORY";
 fi
 
 compinit -d "$ZSH_CACHE_DIRECTORY/zcompdump-$ZSH_VERSION" 
