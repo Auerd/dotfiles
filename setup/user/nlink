@@ -21,5 +21,5 @@ elif [[ -e $2 ]]; then
 fi
 
 echo "Linking $formatted1 to $formatted2..."
-ln -sr "$1" "$2"
+ln -s "$(realpath "$1")" "$(realpath "$2")"
 exit 0
