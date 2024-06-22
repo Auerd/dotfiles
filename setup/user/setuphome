@@ -20,7 +20,7 @@ function setup-alacritty() {
   fi
   local mainconf="$confdir/alacritty.toml"
   touch "$mainconf"
-  echo "import = [$defaultconf]" >"$mainconf"
+  echo "import = [\"$defaultconf\"]" >"$mainconf"
   if [[ $font_installed -eq 0 ]]; then
     return 0
   fi
