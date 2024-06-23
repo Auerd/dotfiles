@@ -86,9 +86,9 @@ if ! [ -f "$dir/antigen.zsh" ]; then
     echo "If you want to update antigen.zsh regulary, then install it via your package manager"
     mkdir -p "$dir"
     if command -v curl &> /dev/null; then
-      curl -sL git.io/antigen > "$dir/antigen.zsh"
+      curl -s -L git.io/antigen > "$dir/antigen.zsh"
     elif command -v wget &> /dev/null; then
-      wget -qO git.io/antigen > "$dir/antigen.zsh"
+      wget -q -O git.io/antigen > "$dir/antigen.zsh"
     else
       echo "Please install antigen plugin, curl or wget from your package manager"
       dir="" 
