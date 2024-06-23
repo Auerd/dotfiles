@@ -85,10 +85,11 @@ if ! [ -f "$dir/antigen.zsh" ]; then
     echo "$(tput bold)Warning!$(tput sgr0) This procedure will be executed only once!"
     echo "If you want to update antigen.zsh regulary, then install it via your package manager"
     mkdir -p "$dir"
+    touch "$dir/antigen.zsh"
     if command -v curl &> /dev/null; then
-      curl -s -L git.io/antigen > "$dir/antigen.zsh"
+      curl -s -L -o "$dir/antigen.zsh" git.io/antigen 
     elif command -v wget &> /dev/null; then
-      wget -q -O git.io/antigen > "$dir/antigen.zsh"
+      wget -q -O "$dir/antigen.zsh" git.io/antigen
     else
       echo "Please install antigen plugin, curl or wget from your package manager"
       dir="" 
