@@ -3,6 +3,8 @@
 # Terminate already running bar instances
 polybar-msg cmd quit
 
+command -v xrandr &>/dev/null || polybar && exit 0
+
 screens=$(xrandr --listactivemonitors | grep -v "Monitors" | cut -d" " -f6)
 
 if [[ $(xrandr --listactivemonitors | grep -v "Monitors" | cut -d" " -f4 | cut -d"+" -f2- | uniq | wc -l) == 1 ]]; then
