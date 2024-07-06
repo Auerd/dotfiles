@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+# vim:fileencoding=utf-8:foldmethod=marker
 # sources: 
 #   https://wiki.archlinux.org/title/Zsh
 #   https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
@@ -74,45 +75,115 @@ mkcdir()
 
 
 
-
-# Plugins
-
-dir=${PREFIX:-/usr}/share/zsh/share
-if ! [ -f "$dir/antigen.zsh" ]; then
-  dir=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
-  if ! [ -f "$dir/antigen.zsh" ]; then
-    echo "Installing antigen.zsh plugin to XDG_DATA_HOME directory." 
-    echo "$(tput bold)Warning!$(tput sgr0) This procedure will be executed only once!"
-    echo "If you want to update antigen.zsh regulary, then install it via your package manager"
-    mkdir -p "$dir"
-    touch "$dir/antigen.zsh"
-    if command -v curl &> /dev/null; then
-      curl -s -L -o "$dir/antigen.zsh" git.io/antigen 
-    elif command -v wget &> /dev/null; then
-      wget -q -O "$dir/antigen.zsh" git.io/antigen
+# Plugins {{{
+install-repo() {(
+  tmpdir="$PREFIX/tmp/zsh"
+  branch="master"
+  
+  function usage {
+    cat <<EOF
+usage: install-repo [-huz] [-t <tempdir>] [-b <branch>] <repo> <worktree>
+description: installs repository to <worktree> from https://github.com/<repo>
+options:
+  -h print this message and exit 0
+  -b use branch instead of $branch
+  -u update repository if it already exist
+  -t use tempdir instead of $tmpdir as temporary directory
+  -z install archive instead of cloning git repository
+EOF
+  }
+  
+  set -e
+  while getopts "b:ht:uz" opt; do
+    case "$opt" in
+      b) branch="$OPTARG";;
+      h) usage; return 0;;
+      t) tmpdir="$OPTARG";;
+      u) update="true";;
+      z) nogit="true";;
+      *) usage >&2; return 1;;
+    esac
+  done
+  shift $(( OPTIND - 1 ))
+  
+  if [[ -z $1 ]] || [[ -z $2 ]]; then
+    usage >&2; return 1
+  fi
+  
+  repo=$1
+  worktree=$2
+  
+  url="https://github.com/$repo"
+  masterarchv="$url/archive/refs/heads/$branch.zip"
+  [[ -z $update ]] && [[ -e "$worktree" ]]\
+    && echo "Repository $repo was installed" && return 0
+  mkdir -p "$tmpdir" 
+  mkdir -p "$worktree"
+  if command -v git &>/dev/null && [[ -z $nogit ]]; then
+    if [[ -z $update ]] || [[ ! -e "$worktree" ]]; then
+      git clone --depth=1 "$url" "$worktree"
     else
-      echo "Please install antigen plugin, curl or wget from your package manager"
-      dir="" 
+      git -C "$worktree" pull origin "$branch"
+    fi
+    return 0
+  else
+    echo "Trying to get archive..."
+    if command -v curl &>/dev/null; then
+      curl -# -o "$tmpdir/$branch.zip" -L "$masterarchv"
+    elif command -v wget &>/dev/null; then
+      wget -O "$tmpdir/$branch.zip" "$masterarchv"
+    else
+      echo "Neither git, nor wget, nor curl were found. Install one of it"
+      return 1
+    fi
+    echo "Unpacking zip archive..."
+    unzip "$tmpdir/$branch.zip" -d "$(dirname "$worktree")" 1>/dev/null
+    rm -rf "$worktree"
+    mv "$worktree-$branch" "$worktree" 
+    return 0
+  fi
+)}
+pluginsdir="${XDG_LOCAL_HOME:-$HOME/.local/share}/zsh/plugins"
+mkdir -p "$pluginsdir"
+linkstosrc=(\
+  https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/command-not-found/command-not-found.plugin.zsh \
+)
+repostosrc=(zsh-users/zsh-syntax-highlighting)
+for link in "${linkstosrc[@]}"; do
+  filename=${link##*/}
+  filepath="$pluginsdir/$filename"
+  if [[ ! -e "$filepath" ]]; then
+    if command -v curl &>/dev/null; then
+      curl -# -o "$filepath" -L "$link"
+    elif command -v wget &>/dev/null; then
+      wget -O "$filepath" "$link"
+    else
+      echo "Neither curl nor wget were found. Please install one"
+      break
     fi
   fi
+  #shellcheck source=/dev/null
+  source "$filepath"
+done
+if \
+  command -v git &>/dev/null || \
+  command -v curl &>/dev/null || \
+  command -v wget &>/dev/null
+then
+  for repo in "${repostosrc[@]}"; do
+    repopath="$pluginsdir/$repo"
+    if [[ ! -e "$repopath" ]]; then
+      install-repo "$repo" "$repopath" || continue
+    fi
+    for file in "$repopath"/*.plugin.zsh; do
+    #shellcheck source=/dev/null
+      source "$file"
+    done
+  done
+else
+  echo "Neither git, not curl, nor wget were found. Please install one"
 fi
-
-if [ -n "$dir" ]; then
-# shellcheck source=/dev/null
-  source "$dir/antigen.zsh"
-  antigen use oh-my-zsh
-  antigen bundles <<EOBUNDLES
-    git 
-    command-not-found
-    zsh-users/zsh-syntax-highlighting
-    zsh-users/zsh-autosuggestions
-EOBUNDLES
-  antigen apply
-fi
-
-export ZSH_AUTOSUGGEST_STRATEGY=()
-
-
+# }}}
 
 # Prevention of terminal break
 function reset_broken_terminal () {
