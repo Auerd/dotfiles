@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 # vim:fileencoding=utf-8:foldmethod=marker
-# sources: 
+# sources {{{
 #   https://wiki.archlinux.org/title/Zsh
-#   https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
+#   https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command}}}
 autoload -Uz compinit promptinit add-zsh-hook 
 
 if ! [[ -d $ZSH_CACHE_DIRECTORY ]]; then
@@ -16,13 +16,13 @@ promptinit
 
 zstyle ':completion::complete:*' gain-privileges 1 
 
+# Prompt {{{
 WHOAMI=$(whoami)
 
-#Prompt 
 set_prompt(){ 
   PROMPT='%F{green}%2~%f %(!.#.$) '
   USER_HOST='%F{blue}%n@%m%f' 
-  (( COLUMNS-${#HOST}-${#WHOAMI} >= "76" )) && PROMPT="$USER_HOST $PROMPT" 
+  (( COLUMNS-${#HOST}-${#WHOAMI} > "76" )) && PROMPT="$USER_HOST $PROMPT" 
 } 
 
 if [[ -f $ZDOTDIR/.prompt ]]; then 
@@ -39,15 +39,12 @@ if [[ -f $ZDOTDIR/.rprompt ]]; then
 else 
   export RPROMPT=''; 
 fi 
-
-
+# }}}
 
 # Lock tty in timeout 
 [[ $(tty) =~ /dev\/tty[1-6] ]] && TMOUT=180
 
-
-
-# Aliases 
+# Aliases {{{
 # source: https://stackoverflow.com/questions/957928/is-there-a-way-to-get-the-git-root-directory-in-one-command
 alias ls="ls --color=auto" 
 alias la="ls -A"
@@ -64,21 +61,29 @@ if ! [ -e "$trustfile" ] && command -v git &> /dev/null && git -C "$ZDOTDIR" rev
 else
   touch "$trustfile"
 fi
+#}}}
 
-
-# Commands
+# Commands {{{
 mkcdir()
 {
   mkdir -p -- "$1" &&
     cd -P -- "$1" || return 1
 }
-
-
+#}}}
 
 # Plugins {{{
+pluginsdir="${XDG_LOCAL_HOME:-$HOME/.local/share}/zsh/plugins"
+linkstosrc=(\
+  https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/command-not-found/command-not-found.plugin.zsh \
+)
+repostosrc=(\
+  zsh-users/zsh-syntax-highlighting \
+)
+
+# install-repo script {{{
 install-repo() {(
-  tmpdir="$PREFIX/tmp/zsh"
-  branch="master"
+  local tmpdir="$PREFIX/tmp/zsh"
+  local branch="master"
   
   function usage {
     cat <<EOF
@@ -110,11 +115,11 @@ EOF
     usage >&2; return 1
   fi
   
-  repo=$1
-  worktree=$2
-  
-  url="https://github.com/$repo"
-  masterarchv="$url/archive/refs/heads/$branch.zip"
+  local repo=$1
+  local worktree=$2
+
+  local url="https://github.com/$repo"
+  local masterarchv="$url/archive/refs/heads/$branch.zip"
   [[ -z $update ]] && [[ -e "$worktree" ]]\
     && echo "Repository $repo was installed" && return 0
   mkdir -p "$tmpdir" 
@@ -127,7 +132,7 @@ EOF
     fi
     return 0
   else
-    echo "Trying to get archive..."
+    echo "Trying to get archive from $url..."
     if command -v curl &>/dev/null; then
       curl -# -o "$tmpdir/$branch.zip" -L "$masterarchv"
     elif command -v wget &>/dev/null; then
@@ -143,21 +148,21 @@ EOF
     return 0
   fi
 )}
-pluginsdir="${XDG_LOCAL_HOME:-$HOME/.local/share}/zsh/plugins"
+# }}}
+
+# Install if needed and source {{{
 mkdir -p "$pluginsdir"
-linkstosrc=(\
-  https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/command-not-found/command-not-found.plugin.zsh \
-)
-repostosrc=(zsh-users/zsh-syntax-highlighting)
 for link in "${linkstosrc[@]}"; do
   filename=${link##*/}
   filepath="$pluginsdir/$filename"
   if [[ ! -e "$filepath" ]]; then
     if command -v curl &>/dev/null; then
+      echo "Getting $filename..."
       curl -# -o "$filepath" -L "$link"
+      echo "Done"
     elif command -v wget &>/dev/null; then
-      wget -O "$filepath" "$link"
-    else
+      echo "Getting $filename..."
+      wget -O "$filepath" "$link"    else
       echo "Neither curl nor wget were found. Please install one"
       break
     fi
@@ -185,16 +190,49 @@ else
 fi
 # }}}
 
-# Prevention of terminal break
+# upgrade-plugins script {{{
+function upgrade-plugins {
+  echo "Trying to get files..."
+  for link in "${linkstosrc[@]}"; do
+    filename=${link##*/}
+    filepath="$pluginsdir/$filename"
+    if command -v curl &>/dev/null; then
+      echo "Getting $filename..."
+      curl -# -o "$filepath" -L "$link"
+    elif command -v wget &>/dev/null; then
+      echo "Getting $filename..."
+      wget -O "$filepath" "$link"
+    else
+      echo "Neither curl nor wget were found. Please install one"
+      return 1
+    fi
+  done
+  if \
+    command -v git &>/dev/null || \
+    command -v curl &>/dev/null || \
+    command -v wget &>/dev/null
+  then
+    for repo in "${repostosrc[@]}"; do
+      repopath="$pluginsdir/$repo"
+      install-repo -u "$repo" "$repopath" || continue
+    done
+  else
+    echo "Neither git, not curl, nor wget were found. Please install one"
+  fi
+  echo "Done! Now start a new shell"
+}
+# }}}
+# }}}
+
+# Prevention of terminal break {{{
 function reset_broken_terminal () {
   printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
 }
 
 add-zsh-hook -Uz precmd reset_broken_terminal
+# }}}
 
-
-
-# Autorehash for pacman
+# Autorehash for pacman {{{
 # source: https://wiki.archlinux.org/title/Zsh#On-demand_rehash
 if command -v pacman &> /dev/null; then
   if [[ -e $PREFIX/var/cache/zsh/pacman ]] 
@@ -213,10 +251,9 @@ if command -v pacman &> /dev/null; then
     add-zsh-hook -Uz precmd rehash_precmd
   fi
 fi
+# }}}
 
-
-
-# Keybinding
+# Keybinding {{{
 # source: https://wiki.archlinux.org/title/Zsh#Key_bindings
 typeset -g -A key
 
@@ -257,10 +294,9 @@ if ((${+terminfo[smkx]} && ${+terminfo[rmkx]})); then
   add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
   add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
+# }}}
 
-
-
-# Clear terminal
+# Clear terminal {{{
 function clear-screen-and-scrollback() {
   printf '\x1Bc'
   zle clear-screen
@@ -268,22 +304,23 @@ function clear-screen-and-scrollback() {
 
 zle -N clear-screen-and-scrollback
 bindkey '^L' clear-screen-and-scrollback
+# }}}
 
-
-
-
-# Options
+# Options {{{
 setopt autopushd
 setopt correct
+# }}}
 
-# Correction setup
+# Correction setup {{{
 export CORRECT_IGNORE="[_|.]*"
 export TIMEFMT="
 user %U
 system %S
 total %E(%*E)
 cpu %P"
+# }}}
 
-# Optional machine-dependent zsh configuration
+# Optional machine-dependent zsh configuration {{{
 # shellcheck source=/dev/null
 [[ -f $ZDOTDIR/.zshrcp ]] && source "$ZDOTDIR/.zshrcp"
+#  }}}
