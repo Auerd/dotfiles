@@ -1,9 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Terminate already running bar instances
 polybar-msg cmd quit
 
-command -v xrandr &>/dev/null || polybar && exit 0
+if command -v xrandr &>/dev/null; then 
+  polybar
+  exit 0
+fi
 
 screens=$(xrandr --listactivemonitors | grep -v "Monitors" | cut -d" " -f6)
 
