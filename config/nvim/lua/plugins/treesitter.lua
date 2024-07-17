@@ -65,6 +65,8 @@ return {
         "yaml",
         "arduino",
         "java",
+        "html",
+        "css",
         "javascript",
         "gitcommit",
         "git_config",
