@@ -1,11 +1,6 @@
 return {
   {
     "stevearc/conform.nvim",
-    config = function()
-      require("conform").formatters.shfmt = {
-        prepend_args = "-ln=auto",
-      }
-    end,
     opts = {
       formatters_by_ft = {
         lua = { "stylua" },
