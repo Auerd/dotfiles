@@ -7,6 +7,7 @@ return {
         sh = { "shfmt" },
         bash = { "shfmt" },
         zsh = { "shfmt" },
+        html = { "djlint" },
       },
       format_on_save = {
         timeout_ms = 500,
