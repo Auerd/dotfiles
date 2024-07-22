@@ -162,7 +162,8 @@ for link in "${linkstosrc[@]}"; do
       echo "Done"
     elif command -v wget &>/dev/null; then
       echo "Getting $filename..."
-      wget -O "$filepath" "$link"    else
+      wget -O "$filepath" "$link"
+    else
       echo "Neither curl nor wget were found. Please install one"
       break
     fi
@@ -272,6 +273,7 @@ key[Shift-Tab]="${terminfo[kcbt]}"
 key[Control-Left]="${terminfo[kLFT5]}"
 key[Control-Right]="${terminfo[kRIT5]}"
 
+# No, do not format it
 [[ -n "${key[Home]}"          ]] && bindkey -- "${key[Home]}"          beginning-of-line
 [[ -n "${key[End]}"           ]] && bindkey -- "${key[End]}"           end-of-line
 [[ -n "${key[Insert]}"        ]] && bindkey -- "${key[Insert]}"        overwrite-mode
@@ -287,6 +289,10 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[Control-Left]}"  ]] && bindkey -- "${key[Control-Left]}"  backward-word
 [[ -n "${key[Control-Right]}" ]] && bindkey -- "${key[Control-Right]}" forward-word
 
+# You fall in grace, shfmt
+# I don't know how to disable formatting for either code fragment or file with editorconfig
+# Tried all but nothing got
+# Is this problem with conform?
 if ((${+terminfo[smkx]} && ${+terminfo[rmkx]})); then
   autoload -Uz add-zle-hook-widget
   function zle_application_mode_start { echoti smkx; }
