@@ -66,3 +66,17 @@ for file in "$FILES_DIR"/*; do
     ;;
   esac
 done
+
+filename=".background.jpg"
+filepath="$HOME/$filename"
+link=https://wallpapers.com/images/hd/1920x1080-aesthetic-glrfk0ntspz3tvxg.jpg
+if command -v curl &>/dev/null; then
+  echo "Getting $filename..."
+  curl -# -o "$filepath" -L "$link"
+  echo "Done"
+elif command -v wget &>/dev/null; then
+  echo "Getting $filename..."
+  wget -O "$filepath" "$link"
+else
+  echo "Neither curl nor wget were found. Please install one"
+fi
