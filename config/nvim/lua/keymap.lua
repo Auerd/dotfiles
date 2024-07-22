@@ -13,6 +13,7 @@ map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
 -- }}}
 
 -- Buffer navigation {{{
+-- You can use plugins inside function, because plugins are loaded, when you use keymapping
 local bp = vim.cmd.bp
 local bn = vim.cmd.bn
 map("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Go to next buffer" })
@@ -42,13 +43,13 @@ map("n", "<A-l>", "zl", { desc = "Move view to the right" })
 -- }}}
 
 -- Neotree toggle {{{
--- But you can use this workaround
 map("n", "<leader>e", function()
   require("neo-tree.command").execute { toggle = true }
 end, { desc = "Toggle neo-tree" })
 -- }}}
 
 -- Lsp {{{
+-- Or you can use this workaround
 map("n", "<leader>i", function()
   return ":IncRename " .. vim.fn.expand "<cword>"
 end, { desc = "Lsp rename", expr = true })
@@ -71,4 +72,16 @@ end, { desc = "Toggle lines number" })
 -- Mode switch {{{
 map("t", "<C-x>", "<C-\\><C-n>", { desc = "Switch to normal mode" })
 map("i", "jj", "<Esc>", { desc = "Switch to normal mode" })
+-- }}}
+
+-- LuaSnip {{{
+-- source: https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
+-- This is not acceptable
+-- local ls = require "luasnip"
+map({ "i", "s" }, "<C-L>", function()
+  require("luasnip").jump(1)
+end, { silent = true })
+map({ "i", "s" }, "<C-J>", function()
+  require("luasnip").jump(-1)
+end, { silent = true })
 -- }}}
