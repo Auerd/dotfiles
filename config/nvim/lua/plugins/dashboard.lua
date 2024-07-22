@@ -1,3 +1,4 @@
+-- vim:fileencoding=utf-8:foldmethod=marker
 -- source of art = https://www.asciiart.eu/food-and-drinks/other
 return {
   {
@@ -5,22 +6,22 @@ return {
     event = "VimEnter",
     dependencies = { { "nvim-tree/nvim-web-devicons" } },
     opts = function()
-      local art = [[
-                    _           
-                /> //  __       
-            ___/ \// _/ /       
-          ,' , \_/ \/ _/__      
-         /    _/ |--\  `  `~,   
-        ' , ,/  /`\ / `  `   `, 
-        |    |  |  \> `  `  ` | 
-        |  ,  \/ ' '    `  `  / 
-        `,   '  '    ' `  '  /  
-          \ `      '  ' ,  ,'   
-           \ ` ` '    ,  ,/     
-            `,  `  '  , ,'      
-              \ `  ,   /        
-               `~----~'         ]] ---@type string
-
+      local art = -- {{{
+        [[
+                  _           
+              /> //  __       
+          ___/ \// _/ /       
+        ,' , \_/ \/ _/__      
+       /    _/ |--\  `  `~,   
+      ' , ,/  /`\ / `  `   `, 
+      |    |  |  \> `  `  ` | 
+      |  ,  \/ ' '    `  `  / 
+      `,   '  '    ' `  '  /  
+        \ `      '  ' ,  ,'   
+         \ ` ` '    ,  ,/     
+          `,  `  '  , ,'      
+            \ `  ,   /        
+             `~----~'         ]] ---@type string }}}
       return {
         theme = "doom",
         config = {
