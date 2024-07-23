@@ -72,7 +72,7 @@ mkcdir()
 #}}}
 
 # Plugins {{{
-pluginsdir="${XDG_LOCAL_HOME:-$HOME/.local/share}/zsh/plugins"
+pluginsdir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
 linkstosrc=(\
   https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/command-not-found/command-not-found.plugin.zsh \
 )
