@@ -11,9 +11,8 @@ PATH=$PATH:$SCRIPT_DIR
 
 font_installed=0
 fc-list | grep "JetBrainsMono Nerd Font," &>/dev/null || font_installed=$?
-font_installed=1
 
-if [[ $font_installed -eq 1 ]] && ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
+if [[ $font_installed -ne 0 ]] && ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
   fontname=JetBrainsMono
   fontdir=${XDG_DATA_HOME:-$HOME/.local/share}/fonts/$fontname
   releaselink=https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest

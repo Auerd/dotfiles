@@ -159,7 +159,6 @@ for link in "${linkstosrc[@]}"; do
     if command -v curl &>/dev/null; then
       echo "Getting $filename..."
       curl -# -o "$filepath" -L "$link"
-      echo "Done"
     elif command -v wget &>/dev/null; then
       echo "Getting $filename..."
       wget -O "$filepath" "$link"
