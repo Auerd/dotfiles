@@ -11,6 +11,51 @@ PATH=$PATH:$SCRIPT_DIR
 
 font_installed=0
 fc-list | grep "JetBrainsMono Nerd Font," &>/dev/null || font_installed=$?
+font_installed=1
+
+if [[ $font_installed -eq 1 ]] && ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
+  fontname=JetBrainsMono
+  fontdir=${XDG_DATA_HOME:-$HOME/.local/share}/fonts/$fontname
+  releaselink=https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
+  mkdir -p "$fontdir/"
+  if command -v unxz &>/dev/null; then
+    filextension="tar.xz"
+  elif command -v unzip &>/dev/null; then
+    filextension="zip"
+  else
+    echo "Neither unxz nor unzip was found. Please, install one"
+    exit 1
+  fi
+  archivename="$fontname.$filextension"
+  archivepath="$fontdir/$archivename"
+  # source: https://gist.github.com/steinwaywhw/a4cd19cda655b8249d908261a62687f8
+  if command -v curl &>/dev/null; then
+    # Getting archive
+    curl -L "$(curl -s $releaselink |
+      grep "$archivename" |
+      grep "https://" |
+      cut -d : -f 2,3 |
+      tr -d \" |
+      tr -d " ")" -o "$archivepath"
+  elif command -v wget &>/dev/null; then
+    wget -q $releaselink -O - |
+      grep "$archivename" |
+      grep "https://" |
+      cut -d : -f 2,3 |
+      tr -d \" |
+      tr -d " " |
+      wget -i - -O "$archivepath"
+  else
+    echo "Neither curl nor wget was found. Please, install one"
+    exit 1
+  fi
+  case $filextension in
+  "tar.xz") tar -xf "$archivepath" -C "$fontdir" ;;
+  "zip") unzip "$archivename" -d "$fontdir" ;;
+  esac
+  rm "$archivepath"
+  font_installed=0
+fi
 
 function setup-alacritty() {
   local confdir="$1/alacritty"
@@ -69,11 +114,10 @@ done
 
 filename=".background.jpg"
 filepath="$HOME/$filename"
-link=https://wallpapers.com/images/hd/1920x1080-aesthetic-glrfk0ntspz3tvxg.jpg
+link='https://i.imgur.com/Pjj3KTp.jpeg'
 if command -v curl &>/dev/null; then
   echo "Getting $filename..."
   curl -# -o "$filepath" -L "$link"
-  echo "Done"
 elif command -v wget &>/dev/null; then
   echo "Getting $filename..."
   wget -O "$filepath" "$link"
