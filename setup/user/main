@@ -113,13 +113,15 @@ done
 
 filename=".background.jpg"
 filepath="$HOME/$filename"
-link='https://i.imgur.com/Pjj3KTp.jpeg'
-if command -v curl &>/dev/null; then
-  echo "Getting $filename..."
-  curl -# -o "$filepath" -L "$link"
-elif command -v wget &>/dev/null; then
-  echo "Getting $filename..."
-  wget -O "$filepath" "$link"
-else
-  echo "Neither curl nor wget were found. Please install one"
+if [[ -e "$filepath" ]]; then
+  link='https://i.imgur.com/Pjj3KTp.jpeg'
+  if command -v curl &>/dev/null; then
+    echo "Getting $filename..."
+    curl -# -o "$filepath" -L "$link"
+  elif command -v wget &>/dev/null; then
+    echo "Getting $filename..."
+    wget -O "$filepath" "$link"
+  else
+    echo "Neither curl nor wget were found. Please install one"
+  fi
 fi
