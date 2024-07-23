@@ -10,6 +10,7 @@ formatted1=$(format "$1")
 formatted2=$(format "$2")
 if [[ $(realpath "$1") = $(realpath "$2") ]]; then
   echo "$formatted1 is already linked to $formatted2. Skipping..."
+  exit 0
 elif [[ -e $2 ]]; then
   if ask "File $formatted2 exists. Do you want to replace it? (y/n) "; then
     echo "Deleting $formatted2 ..."
