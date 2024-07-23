@@ -1,6 +1,6 @@
 #!/bin/bash
 
-path=$(realpath "$1")
+path=$(realpath -s "$1")
 name=${path##*/}
 dir=${path%"$name"}
 dir=${dir%/}
