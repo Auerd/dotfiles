@@ -114,6 +114,8 @@ done
 filename=".background.jpg"
 filepath="$HOME/$filename"
 if [[ -e "$filepath" ]]; then
+  echo "$HOME/$filename exists. Skipping..."
+else
   link='https://i.imgur.com/Pjj3KTp.jpeg'
   if command -v curl &>/dev/null; then
     echo "Getting $filename..."
