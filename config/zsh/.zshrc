@@ -16,6 +16,13 @@ promptinit
 
 zstyle ':completion::complete:*' gain-privileges 1 
 
+# History {{{
+HISTFILE=$ZSH_CACHE_DIRECTORY/zhistory
+HISTSIZE=100000
+SAVEHIST=100000
+setopt SHARE_HISTORY
+# }}}
+
 # Prompt {{{
 WHOAMI=$(whoami)
 
