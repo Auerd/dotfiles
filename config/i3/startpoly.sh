@@ -3,7 +3,7 @@
 # Terminate already running bar instances
 polybar-msg cmd quit
 
-if command -v xrandr &>/dev/null; then 
+if ! command -v xrandr &>/dev/null; then 
   polybar
   exit 0
 fi
