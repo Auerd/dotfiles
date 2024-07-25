@@ -2,7 +2,7 @@ return {
   {
     "4e554c4c/darkman.nvim",
     build = "go build -o bin/darkman.nvim",
-    enabled = vim.fn.executable "darkman" == 1,
+    enabled = vim.fn.executable "darkman" == 1 and vim.fn.executable "systemctl" == 1,
     opts = {
       change_background = true,
       send_user_event = false,
