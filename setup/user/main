@@ -98,6 +98,10 @@ for file in "$FILES_DIR"/*; do
     setup-alacritty "$confdir"
     setup-kitty "$confdir"
     ;;
+  "termux")
+    termuxdir="$HOME/.termux"
+    ndlink "$file" "$termuxdir"
+    ;;
   "local")
     [[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
     [[ -d "$file/state" ]] && ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
