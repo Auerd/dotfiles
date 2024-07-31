@@ -59,8 +59,10 @@ alias ll="ls -lA"
 alias grep="grep --color=auto"
 alias yay="time yay --sudoloop"
 alias yayy="yay -Syu --noconfirm"
+# sshd in Termux can't listen on 22
+# Instead it usually listens 8022
+alias sshm="ssh -p 8022"
 alias moshm="mosh --ssh='ssh -p 8022'"
-alias ssh="ssh -p 8022"
 if command -v git &> /dev/null &&\
   git -C "$ZDOTDIR" rev-parse
 then
