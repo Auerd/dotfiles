@@ -5,7 +5,7 @@ local o = vim.o
 o.number = true
 
 -- Tabs
-o.tabstop = 8
+o.tabstop = 4
 o.softtabstop = 2
 o.expandtab = true
 o.smarttab = true
