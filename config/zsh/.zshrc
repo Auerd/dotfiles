@@ -322,9 +322,6 @@ bindkey '^L' clear-screen-and-scrollback
 # Options {{{
 setopt autopushd
 setopt correct
-# }}}
-
-# Correction setup {{{
 export CORRECT_IGNORE="[_|.]*"
 export TIMEFMT="
 user %U
