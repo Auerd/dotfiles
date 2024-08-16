@@ -100,7 +100,6 @@ for file in "$FILES_DIR"/*; do
     ;;
   "termux")
     termuxdir="$HOME/.termux"
-    mkdir -p "$termuxdir"
     ndlink "$file" "$termuxdir"
     ;;
   "local")

@@ -8,7 +8,7 @@ PATH=$PATH:$SCRIPT_DIR
 # Prints the file and the directory it is in if last is provided
 formatted1=$(format "$1")
 formatted2=$(format "$2")
-if [[ $(realpath "$1") = $(realpath "$2") ]]; then
+if [[ $(realpath -smL "$1") = $(realpath -smL "$2") ]]; then
   echo "$formatted1 is already linked to $formatted2. Skipping..."
   exit 0
 elif [[ -e $2 ]]; then
@@ -22,5 +22,5 @@ elif [[ -e $2 ]]; then
 fi
 
 echo "Linking $formatted1 to $formatted2..."
-ln -s "$(realpath "$1")" "$(realpath "$2")"
+ln -s "$(realpath -sm "$1")" "$(realpath -sm "$2")"
 exit 0
