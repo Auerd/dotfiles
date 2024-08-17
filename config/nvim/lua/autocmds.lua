@@ -12,3 +12,14 @@ autocmd({ "BufEnter", "BufWinEnter" }, {
     require("ufo").detach()
   end,
 })
+
+autocmd("BufWritePre", {
+  pattern = "*.scss",
+  callback = function(data)
+    if vim.fn.executable "sass" ~= 1 then
+      return
+    end
+    local filename = data.file:match "(.+)%..+"
+    vim.fn.jobstart("sass " .. filename .. ".scss " .. filename .. ".css")
+  end,
+})
