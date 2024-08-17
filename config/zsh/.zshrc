@@ -168,10 +168,10 @@ for link in "${linkstosrc[@]}"; do
   if [[ ! -e "$filepath" ]]; then
     if command -v curl &>/dev/null; then
       echo "Getting $filename..."
-      curl -# -o "$filepath" -L "$link"
+      curl -# -o "$filepath" -L "$link" || continue
     elif command -v wget &>/dev/null; then
       echo "Getting $filename..."
-      wget -O "$filepath" "$link"
+      wget -O "$filepath" "$link" || continue
     else
       echo "Neither curl nor wget were found. Please install one"
       break
@@ -187,7 +187,8 @@ if \
 then
   for repo in "${repostosrc[@]}"; do
     repopath="$pluginsdir/$repo"
-    if [[ ! -e "$repopath" ]]; then
+    setopt +o nomatch
+    if ! ls -d "$repopath"/*.plugin.zsh &>/dev/null; then
       install-repo "$repo" "$repopath" || continue
     fi
     for file in "$repopath"/*.plugin.zsh; do
