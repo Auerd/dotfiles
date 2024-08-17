@@ -1,4 +1,3 @@
-local cmd = vim.cmd
 local o = vim.o
 
 -- Number of line
@@ -20,3 +19,7 @@ o.fcs = "eob: "
 -- Keymap
 o.timeout = true
 o.timeoutlen = 300
+
+local g = vim.g
+g.loaded_netrwPlugin = 1
+g.loaded_netrw = 1
