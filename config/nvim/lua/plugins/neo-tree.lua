@@ -21,7 +21,7 @@ return {
       },
       add_blank_line_at_top = false, -- Add a blank line at the top of the tree.
       auto_clean_after_session_restore = false, -- Automatically clean up broken neo-tree buffers saved in sessions
-      close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
       default_source = "filesystem", -- you can choose a specific source `last` here which indicates the last used source
       enable_diagnostics = true,
       enable_git_status = true,
@@ -37,7 +37,7 @@ return {
         max_lines = 10000, -- How many lines of git status results to process. Anything after this will be dropped.
         -- Anything before this will be used. The last items to be processed are the untracked files.
       },
-      hide_root_node = false, -- Hide the root node.
+      hide_root_node = true, -- Hide the root node.
       retain_hidden_root_indent = false, -- IF the root node is hidden, keep the indentation anyhow.
       -- This is needed if you use expanders because they render in the indent.
       log_level = "info", -- "trace", "debug", "info", "warn", "error", "fatal"
@@ -192,7 +192,7 @@ return {
         --  },
         --},
         indent = {
-          indent_size = 2,
+          indent_size = 1,
           padding = 1,
           -- indent guides
           with_markers = true,
@@ -359,7 +359,7 @@ return {
           -- the global popup_border_style.
         },
         same_level = false, -- Create and paste/move files/directories on the same level as the directory under cursor (as opposed to within the directory under cursor).
-        insert_as = "child", -- Affects how nodes get inserted into the tree during creation/pasting/moving of files if the node under the cursor is a directory:
+        insert_as = "sibling", -- Affects how nodes get inserted into the tree during creation/pasting/moving of files if the node under the cursor is a directory:
         -- "child":   Insert nodes as children of the directory under cursor.
         -- "sibling": Insert nodes  as siblings of the directory under cursor.
         -- Mappings for tree window. See `:h neo-tree-mappings` for a list of built-in commands.
@@ -535,7 +535,8 @@ return {
           --               -- the current file is changed while the tree is open.
           leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
         },
-        hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
+        hijack_netrw_behavior = "open_default",
+        -- "open_default", -- netrw disabled, opening a directory opens neo-tree
         -- in whatever position is specified in window.position
         -- "open_current",-- netrw disabled, opening a directory opens within the
         -- window like netrw would, regardless of window.position
