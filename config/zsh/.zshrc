@@ -94,26 +94,29 @@ repostosrc=(\
 install-repo() {(
   local tmpdir="$PREFIX/tmp/zsh"
   local branch="master"
+  local force update nogit
   
   function usage {
     cat <<EOF
-usage: install-repo [-huz] [-t <tempdir>] [-b <branch>] <repo> <worktree>
+usage: install-repo [-fhuz] [-t <tempdir>] [-b <branch>] <repo> <worktree>
 description: installs repository to <worktree> from https://github.com/<repo>
 options:
   -h print this message and exit 0
   -b use branch instead of $branch
   -u update repository if it already exist
   -t use tempdir instead of $tmpdir as temporary directory
+  -f install worktree even if it is exists
   -z install archive instead of cloning git repository
 EOF
   }
   
   set -e
-  while getopts "b:ht:uz" opt; do
+  while getopts "b:fht:uz" opt; do
     case "$opt" in
       b) branch="$OPTARG";;
       h) usage; return 0;;
       t) tmpdir="$OPTARG";;
+      f) force="true";;
       u) update="true";;
       z) nogit="true";;
       *) usage >&2; return 1;;
@@ -128,25 +131,26 @@ EOF
   local repo=$1
   local worktree=$2
 
-  local url="https://github.com/$repo"
-  local masterarchv="$url/archive/refs/heads/$branch.zip"
-  [[ -z $update ]] && [[ -e "$worktree" ]]\
+  local repourl="https://github.com/$repo"
+  local masterarchvurl="$repourl/archive/refs/heads/$branch.zip"
+  [[ -z $update ]] && [[ -e "$worktree" ]] && [[ -z $force ]]\
     && echo "Repository $repo was installed" && return 0
   mkdir -p "$tmpdir" 
   mkdir -p "$worktree"
   if command -v git &>/dev/null && [[ -z $nogit ]]; then
-    if [[ -z $update ]] || [[ ! -e "$worktree" ]]; then
-      git clone --depth=1 "$url" "$worktree"
+    if [[ -z $update ]] || [[ ! -e "$worktree" ]] || [[ -n $force ]]; then
+      rm -rf "$worktree"
+      git clone --depth=1 "$repourl" "$worktree"
     else
       git -C "$worktree" pull origin "$branch"
     fi
     return 0
   else
-    echo "Trying to get archive from $url..."
+    echo "Trying to get archive from $repourl..."
     if command -v curl &>/dev/null; then
-      curl -# -o "$tmpdir/$branch.zip" -L "$masterarchv"
+      curl -# -o "$tmpdir/$branch.zip" -L "$masterarchvurl"
     elif command -v wget &>/dev/null; then
-      wget -O "$tmpdir/$branch.zip" "$masterarchv"
+      wget -O "$tmpdir/$branch.zip" "$masterarchvurl"
     else
       echo "Neither git, nor wget, nor curl were found. Install one of it"
       return 1
@@ -189,6 +193,7 @@ then
     repopath="$pluginsdir/$repo"
     setopt +o nomatch
     if ! ls -d "$repopath"/*.plugin.zsh &>/dev/null; then
+      [[ -e "$repopath" ]] && rm -rf "$repopath"
       install-repo "$repo" "$repopath" || continue
     fi
     for file in "$repopath"/*.plugin.zsh; do
