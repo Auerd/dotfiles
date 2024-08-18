@@ -12,29 +12,6 @@ map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
 -- }}}
 
--- Buffer navigation {{{
--- You can use plugins inside function, because plugins are loaded, when you use keymapping
-local bp = vim.cmd.bp
-local bn = vim.cmd.bn
-map("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Go to next buffer" })
-map("n", "<S-Tab>", "<cmd>bprev<cr>", { desc = "Go to previous buffer" })
-map("n", "<leader>dd", function()
-  require("bufdelete").bufdelete(0)
-end, { desc = "Delete current buffer and move to next" })
-map("n", "<leader>dc", function()
-  require("bufdelete").bufdelete(0)
-  bp()
-end, { desc = "Delete current buffer and move to previous" })
-map("n", "<leader>dp", function()
-  bp()
-  require("bufdelete").bufdelete(0)
-end, { desc = "Delete previous buffer" })
-map("n", "<leader>dn", function()
-  bn()
-  require("bufdelete").bufdelete(0)
-end, { desc = "Delete next buffer" })
--- }}}
-
 -- View navigation {{{
 map("n", "<A-h>", "zh", { desc = "Move view to the left" })
 map("n", "<A-j>", "<C-e>", { desc = "Move view down" })
