@@ -15,5 +15,6 @@ vim.g.no_italic = vim.env.TERMUX_VERSION ~= nil ---@type boolean
 
 require "options"
 require "autocmds"
+vim.g.mapleader = " "
 require "keymap"
 require("lazy").setup "plugins"

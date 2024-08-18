@@ -1,9 +1,22 @@
 -- vim:fileencoding=utf-8:foldmethod=marker
 -- Warning! This file executed before "lazy.nvim". That means plugins may not work there
 -- If it's needed to use plugin in "keymap()", you can map key in the "init()" function of plugin
-vim.cmd.let "mapleader = ' '"
-
 local map = vim.keymap.set
+
+-- Telescope {{{
+map("n", "<leader>ff", function()
+  require("telescope.builtin").find_files()
+end, { desc = "Find file" })
+map("n", "<leader>fg", function()
+  require("telescope.builtin").live_grep()
+end, { desc = "Grep threw the files" })
+map("n", "<leader>fb", function()
+  require("telescope.builtin").buffers()
+end, { desc = "List availible buffers" })
+map("n", "<leader>fh", function()
+  require("telescope.builtin").help_tags()
+end, { desc = "Help tags" })
+-- }}}
 
 -- Window navigation {{{
 map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
@@ -53,8 +66,9 @@ map("i", "jj", "<Esc>", { desc = "Switch to normal mode" })
 
 -- LuaSnip {{{
 -- source: https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
--- This is not acceptable
+-- This is not acceptable:
 -- local ls = require "luasnip"
+-- But this is OK
 map({ "i", "s" }, "<C-L>", function()
   require("luasnip").jump(1)
 end, { silent = true })
