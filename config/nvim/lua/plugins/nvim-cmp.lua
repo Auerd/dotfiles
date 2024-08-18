@@ -60,13 +60,7 @@ return {
       {
         "saadparwaiz1/cmp_luasnip",
         dependencies = {
-          {
-            "L3MON4D3/LuaSnip",
-            dependencies = { "rafamadriz/friendly-snippets" },
-            config = function()
-              require("luasnip.loaders.from_vscode").lazy_load()
-            end,
-          },
+          "L3MON4D3/LuaSnip",
         },
       },
       "hrsh7th/cmp-path",
