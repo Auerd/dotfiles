@@ -9,6 +9,7 @@ return {
         zsh = { "shfmt" },
         html = { "djlint" },
         javascript = { "prettier" },
+        python = { "black" },
       },
       format_on_save = {
         timeout_ms = 5000,
