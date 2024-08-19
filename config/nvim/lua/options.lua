@@ -1,5 +1,7 @@
 local o = vim.o
 
+o.shortmess = o.shortmess .. "I"
+
 -- Number of line
 o.number = true
 
