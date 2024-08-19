@@ -65,6 +65,7 @@ alias sshm="ssh -p 8022"
 alias moshm="mosh --ssh='ssh -p 8022'"
 # Change owner of file to parent's one
 alias chownasp="chown --recursive --reference=.."
+alias cnvim="nvim --clean"
 if command -v git &> /dev/null &&\
   git -C "$ZDOTDIR" rev-parse
 then
