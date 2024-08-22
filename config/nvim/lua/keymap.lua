@@ -1,8 +1,10 @@
 -- vim:fileencoding=utf-8:foldmethod=marker
 -- Warning! This file executed before "lazy.nvim". That means plugins may not work there
--- If it's needed to use plugin in "keymap()", you can map key in the "init()" function of plugin
+-- If it's needed to use plugin in "keymap()" not in separate function, you can map key in the "init()" function of plugin
+-- With functions plugin call can be delayed. That's the main purpose
 local map = vim.keymap.set
 
+-- This will work!
 -- Telescope {{{
 map("n", "<leader>ff", function()
   require("telescope.builtin").find_files()
@@ -32,14 +34,16 @@ map("n", "<A-k>", "<C-y>", { desc = "Move view up" })
 map("n", "<A-l>", "zl", { desc = "Move view to the right" })
 -- }}}
 
--- Neotree toggle {{{
+-- Browsing {{{
 map("n", "<leader>e", function()
   require("neo-tree.command").execute { toggle = true }
 end, { desc = "Toggle neo-tree" })
+map("n", "cd", ":cd %:h<CR>", { desc = "Go to parent directory" })
 -- }}}
 
--- Lsp {{{
 -- Or you can use this workaround
+-- Lsp {{{
+-- Just bind it command
 map("n", "<leader>i", function()
   return ":IncRename " .. vim.fn.expand "<cword>"
 end, { desc = "Lsp rename", expr = true })
@@ -60,14 +64,15 @@ end, { desc = "Toggle lines number" })
 -- }}}
 
 -- Mode switch {{{
-map("t", "<C-x>", "<C-\\><C-n>", { desc = "Switch to normal mode" })
+map("t", "<Esc>", "<C-\\><C-n>", { desc = "Switch to normal mode" })
+map("t", "jj", "<C-\\><C-n>", { desc = "Switch to normal mode" })
 map("i", "jj", "<Esc>", { desc = "Switch to normal mode" })
 -- }}}
 
 -- LuaSnip {{{
 -- source: https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 -- This is not acceptable:
--- local ls = require "luasnip"
+--local ls = require "luasnip"
 -- But this is OK
 map({ "i", "s" }, "<C-L>", function()
   require("luasnip").jump(1)
