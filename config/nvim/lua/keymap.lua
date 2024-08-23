@@ -38,7 +38,7 @@ map("n", "<A-l>", "zl", { desc = "Move view to the right" })
 map("n", "<leader>e", function()
   require("neo-tree.command").execute { toggle = true }
 end, { desc = "Toggle neo-tree" })
-map("n", "cd", ":cd %:h<CR>", { desc = "Go to parent directory" })
+map("n", "cd", "<cmd>cd %:h<CR>", { desc = "Go to parent directory" })
 -- }}}
 
 -- Or you can use this workaround
