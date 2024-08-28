@@ -65,7 +65,6 @@ end, { desc = "Toggle lines number" })
 
 -- Mode switch {{{
 map("t", "<Esc>", "<C-\\><C-n>", { desc = "Switch to normal mode" })
-map("t", "jj", "<C-\\><C-n>", { desc = "Switch to normal mode" })
 map("i", "jj", "<Esc>", { desc = "Switch to normal mode" })
 -- }}}
 
