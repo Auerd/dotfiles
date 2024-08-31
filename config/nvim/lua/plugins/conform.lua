@@ -10,6 +10,7 @@ return {
         html = { "djlint" },
         javascript = { "prettier" },
         python = { "black" },
+        json = { "jq" },
       },
       format_on_save = {
         timeout_ms = 5000,
