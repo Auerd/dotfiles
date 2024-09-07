@@ -5,6 +5,32 @@ set -e -u
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 PATH=$PATH:$SCRIPT_DIR
 
+opts=$(getopt -o 'e:' --long 'except:' -n 'ndlink' -- "$@")
+eval set -- "$opts"
+unset opts
+
+exceptions=()
+while :; do
+  case "$1" in
+  -e | --except)
+    tmp=()
+    IFS=',' read -r -a tmp <<<"$2"
+    exceptions=("${exceptions[@]}" "${tmp[@]}")
+    shift 2
+    continue
+    ;;
+  --)
+    shift
+    break
+    ;;
+  *)
+    echo "Options error"
+    exit 1
+    ;;
+  esac
+done
+unset tmp
+
 formatted1=$(format "$1")
 formatted2=$(format "$2")
 if [[ -e $2 ]] && [[ ! -d $2 ]] || [[ -L $2 ]]; then
@@ -20,6 +46,9 @@ fi
 mkdir -p "$2"
 echo "Linking all files and dirs in $formatted1 to $formatted2..."
 for file in "$1"/*; do
-  nlink "$file" "$2/${file##*/}"
+  if [[ ${exceptions[*]} =~ $(basename "$file") ]]; then
+    continue
+  fi
+  nlink "$file" "$2/$(basename "$file")"
 done
 exit 0
