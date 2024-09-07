@@ -9,6 +9,11 @@ return {
     opts = {
       defaults = {
         borderchars = { " ", "", "", "", "", "", "", "" },
+        mappings = {
+          i = {
+            ["<esc>"] = require("telescope.actions").close,
+          },
+        },
       },
     },
   },
