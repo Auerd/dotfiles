@@ -58,9 +58,15 @@ end, { desc = "Lsp definitions" })
 -- }}}
 
 -- Numbers toggle {{{
-map("n", "<leader>nn", function()
+map("n", "<leader>n", function()
   vim.opt_local.number = not vim.o.number
 end, { desc = "Toggle lines number" })
+-- }}}
+
+-- Wrapping toggle {{{
+map("n", "<leader>w", function()
+  vim.opt_local.wrap = not vim.o.wrap
+end, { desc = "Toggle wrapping" })
 -- }}}
 
 -- Mode switch {{{
