@@ -1,12 +1,40 @@
 #!/bin/bash
 
+opts=$(getopt -o 'cd:' --long 'compatabilty,depth' -n 'ncd' -- "$@")
+
+COMPMODE=""
+DEPTH=1
+eval set -- "$opts"
+while :; do
+  case "$1" in
+  -d | --depth)
+    DEPTH="$2"
+    shift 2
+    ;;
+  -c | --compatability)
+    COMPMODE="true"
+    shift
+    ;;
+  --)
+    shift
+    break
+    ;;
+  *)
+    echo "Options error"
+    exit 1
+    ;;
+  esac
+done
+
 path=$(realpath -sm "$1")
-name=${path##*/}
-dir=${path%"$name"}
-dir=${dir%/}
-dir=${dir##*/}
-if [ -z "$dir" ]; then
-  echo "$name"
-else
-  echo "$dir/$name"
-fi
+#name=${path##*/}
+#dir=${path%"$name"}
+#dir=${dir%/}
+#dir=${dir##*/}
+result="$(basename -- "$path")"
+path=$(dirname -- "$path")
+for _ in $(seq 0 $((DEPTH - 1))); do
+  result="$(basename -- "$path")/$result"
+  path=$(dirname -- "$path")
+done
+echo "$result"
