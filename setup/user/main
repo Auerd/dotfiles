@@ -136,6 +136,20 @@ function setup-i3wm() {
 }
 # }}}
 
+# Setup zsh {{{
+function setup-zsh() {
+  local TYPES=(DATA CONFIG STATE)
+  local type name dir
+  for type in "${TYPES[@]}"; do
+    name="XDG_${type}_HOME"
+    eval 'dir=$'"$name"
+    if [[ -n $dir ]]; then
+      echo "$name=\"$dir\"" >>"$HOME/.zshenvp"
+    fi
+  done
+}
+# }}}
+
 for file in "$FILES_DIR"/*; do
   filename=${file##*/}
   case $filename in
@@ -145,6 +159,7 @@ for file in "$FILES_DIR"/*; do
     setup-alacritty "$file"
     setup-kitty "$file"
     setup-i3wm "$file"
+    setup-zsh "$file"
     ;;
   "termux")
     TERMUXDIR="$HOME/.termux"
