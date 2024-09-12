@@ -1,17 +1,33 @@
 #!/bin/bash
 
-set -e -u
+set -e
+
+if [[ -z $* ]]; then
+  echo "Not enough arguments"
+  exit 1
+fi
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 PATH=$PATH:$SCRIPT_DIR
 
-opts=$(getopt -o 'e:' --long 'except:' -n 'ndlink' -- "$@")
+opts=$(getopt -o 'ce:d:' --long 'except:,depth:,compatabilty' -n 'ndlink' -- "$@")
 eval set -- "$opts"
 unset opts
 
 exceptions=()
+DEPTH=1
 while :; do
   case "$1" in
+  -d | --depth)
+    DEPTH=$2
+    shift 2
+    continue
+    ;;
+  -c | --compatability)
+    COMPATABILITY="true"
+    shift
+    continue
+    ;;
   -e | --except)
     tmp=()
     IFS=',' read -r -a tmp <<<"$2"
@@ -31,8 +47,17 @@ while :; do
 done
 unset tmp
 
-formatted1=$(format "$1")
-formatted2=$(format "$2")
+if [[ -z "$2" ]]; then
+  echo "Not enough arguments"
+  exit 1
+fi
+if [[ -n "$3" ]]; then
+  echo "Too many arguments"
+  exit 1
+fi
+
+formatted1=$(format -d "$DEPTH" ${COMPATABILITY+"-c"} "$1")
+formatted2=$(format -d "$DEPTH" ${COMPATABILITY+"-c"} "$2")
 if [[ -e $2 ]] && [[ ! -d $2 ]] || [[ -L $2 ]]; then
   if ask "$formatted2 is not a directory. Do you want to replace it? (y/n) "; then
     echo "Deleting $formatted2 ..."
@@ -49,6 +74,6 @@ for file in "$1"/*; do
   if [[ ${exceptions[*]} =~ $(basename "$file") ]]; then
     continue
   fi
-  nlink "$file" "$2/$(basename "$file")"
+  nlink -d $((DEPTH + 1)) ${COMPATABILITY+"-c"} "$file" "$2/$(basename "$file")"
 done
 exit 0

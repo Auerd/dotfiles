@@ -1,13 +1,53 @@
 #!/bin/bash
 
-set -eu
+set -e
+
+if [[ -z $* ]]; then
+  echo "Not enough arguments"
+  exit 1
+fi
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 PATH=$PATH:$SCRIPT_DIR
 
+opts=$(getopt -o 'cd:' --long 'compatabilty,depth:' -n 'nlink' -- "$@")
+
+DEPTH=1
+eval set -- "$opts"
+while :; do
+  case "$1" in
+  -d | --depth)
+    DEPTH="$2"
+    shift 2
+    ;;
+  -c | --compatability)
+    COMPMODE="true"
+    shift
+    ;;
+  --)
+    shift
+    break
+    ;;
+  *)
+    echo "Options error"
+    exit 1
+    ;;
+  esac
+done
+
+if [[ -z "$2" ]]; then
+  echo "Not enough arguments"
+  exit 1
+fi
+if [[ -n "$3" ]]; then
+  echo "Too many arguments"
+  exit 1
+fi
+
 # Prints the file and the directory it is in if last is provided
-formatted1=$(format "$1")
-formatted2=$(format "$2")
+formatted1=$(format -d "$DEPTH" ${COMPMODE+"-c"} "$1")
+formatted2=$(format -d "$DEPTH" ${COMPMODE+"-c"} "$2")
+
 if [[ $(realpath -smL "$1") = $(realpath -smL "$2") ]]; then
   echo "$formatted1 is already linked to $formatted2. Skipping..."
   exit 0

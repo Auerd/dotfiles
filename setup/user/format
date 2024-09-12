@@ -1,6 +1,6 @@
 #!/bin/bash
 
-opts=$(getopt -o 'cd:' --long 'compatabilty,depth' -n 'format' -- "$@")
+opts=$(getopt -o 'cd:' --long 'compatabilty,depth:' -n 'format' -- "$@")
 
 COMPMODE=""
 DEPTH=1
