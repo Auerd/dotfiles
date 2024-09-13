@@ -1,5 +1,6 @@
 local o = vim.o
 
+-- Disable start screen
 o.shortmess = o.shortmess .. "I"
 
 -- Number of line
@@ -12,6 +13,10 @@ o.expandtab = true
 o.smarttab = true
 o.shiftwidth = 2
 
+-- Windows
+o.splitbelow = true
+o.splitright = true
+
 -- Statusline
 o.laststatus = 3
 
@@ -23,7 +28,11 @@ o.timeout = true
 o.timeoutlen = 300
 
 local g = vim.g
+
+-- Providers
 g.loaded_perl_provider = 0
 g.loaded_node_provider = 0
 g.loaded_ruby_provider = 0
+
+-- Netrw
 g.netrw_banner = 0
