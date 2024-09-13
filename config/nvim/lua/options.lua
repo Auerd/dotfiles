@@ -6,7 +6,7 @@ o.shortmess = o.shortmess .. "I"
 -- Number of line
 o.number = true
 
--- Tabs
+-- Indent
 o.tabstop = 4
 o.softtabstop = 2
 o.expandtab = true
@@ -19,6 +19,9 @@ o.splitright = true
 
 -- Statusline
 o.laststatus = 3
+
+-- Moving
+o.smoothscroll = true
 
 -- End of buffer character
 o.fcs = "eob: "
