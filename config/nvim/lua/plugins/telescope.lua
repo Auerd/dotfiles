@@ -11,7 +11,9 @@ return {
         borderchars = { " ", "", "", "", "", "", "", "" },
         mappings = {
           i = {
-            ["<esc>"] = require("telescope.actions").close,
+            ["<esc>"] = function(bufnr)
+              require("telescope.actions").close(bufnr)
+            end
           },
         },
       },
