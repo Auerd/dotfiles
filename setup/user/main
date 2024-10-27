@@ -74,7 +74,8 @@ function setup-alacritty() {
     return 1
   fi
   nlink "$DEFAULTDOTSCONF" "$DEFAULTCONF"
-  echo "import = [\"$DEFAULTCONF\"]" >"$MAINCONF"
+  echo "[general]" >"$MAINCONF"
+  echo "import = [\"$DEFAULTCONF\"]" >>"$MAINCONF"
 
   if [[ $FONT_INSTALLED -ne 0 ]]; then
     echo "Warning! Alacritty will use default font as JetBrainsMono NF is not installed"
