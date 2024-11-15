@@ -37,48 +37,50 @@ fc-list | grep "JetBrainsMono Nerd Font," &>/dev/null &&
   FONT_INSTALLED=$?
 
 # Get fonts if needed {{{
-if [[ -n $YES ]] || [[ $FONT_INSTALLED -ne 0 ]] && ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
-  FONTNAME=JetBrainsMono
-  FONTDIR=${XDG_DATA_HOME:-$HOME/.local/share}/fonts/$FONTNAME
-  RELEASELINK=https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
-  mkdir -p "$FONTDIR/"
-  if command -v unxz &>/dev/null; then
-    FILEXTENSION="tar.xz"
-  elif command -v unzip &>/dev/null; then
-    FILEXTENSION="zip"
-  else
-    echo "Neither unxz nor unzip was found. Please, install one"
-    exit 1
+if [[ $FONT_INSTALLED -ne 0 ]]; then
+  if [[ -n $YES ]] || ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
+    FONTNAME=JetBrainsMono
+    FONTDIR=${XDG_DATA_HOME:-$HOME/.local/share}/fonts/$FONTNAME
+    RELEASELINK=https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
+    mkdir -p "$FONTDIR/"
+    if command -v unxz &>/dev/null; then
+      FILEXTENSION="tar.xz"
+    elif command -v unzip &>/dev/null; then
+      FILEXTENSION="zip"
+    else
+      echo "Neither unxz nor unzip was found. Please, install one"
+      exit 1
+    fi
+    ARCHIVENAME="$FONTNAME.$FILEXTENSION"
+    ARCHIVEPATH="$FONTDIR/$ARCHIVENAME"
+    # source: https://gist.github.com/steinwaywhw/a4cd19cda655b8249d908261a62687f8
+    if command -v curl &>/dev/null; then
+      # Getting archive
+      curl -L "$(curl -s $RELEASELINK |
+        grep "$ARCHIVENAME" |
+        grep "https://" |
+        cut -d : -f 2,3 |
+        tr -d \" |
+        tr -d " ")" -o "$ARCHIVEPATH"
+    elif command -v wget &>/dev/null; then
+      wget -q $RELEASELINK -O - |
+        grep "$ARCHIVENAME" |
+        grep "https://" |
+        cut -d : -f 2,3 |
+        tr -d \" |
+        tr -d " " |
+        wget -i - -O "$ARCHIVEPATH"
+    else
+      echo "Neither curl nor wget was found. Please, install one"
+      exit 1
+    fi
+    case $FILEXTENSION in
+    "tar.xz") tar -xf "$ARCHIVEPATH" -C "$FONTDIR" ;;
+    "zip") unzip "$ARCHIVENAME" -d "$FONTDIR" ;;
+    esac
+    FONT_INSTALLED=0
+    rm "$ARCHIVEPATH"
   fi
-  ARCHIVENAME="$FONTNAME.$FILEXTENSION"
-  ARCHIVEPATH="$FONTDIR/$ARCHIVENAME"
-  # source: https://gist.github.com/steinwaywhw/a4cd19cda655b8249d908261a62687f8
-  if command -v curl &>/dev/null; then
-    # Getting archive
-    curl -L "$(curl -s $RELEASELINK |
-      grep "$ARCHIVENAME" |
-      grep "https://" |
-      cut -d : -f 2,3 |
-      tr -d \" |
-      tr -d " ")" -o "$ARCHIVEPATH"
-  elif command -v wget &>/dev/null; then
-    wget -q $RELEASELINK -O - |
-      grep "$ARCHIVENAME" |
-      grep "https://" |
-      cut -d : -f 2,3 |
-      tr -d \" |
-      tr -d " " |
-      wget -i - -O "$ARCHIVEPATH"
-  else
-    echo "Neither curl nor wget was found. Please, install one"
-    exit 1
-  fi
-  case $FILEXTENSION in
-  "tar.xz") tar -xf "$ARCHIVEPATH" -C "$FONTDIR" ;;
-  "zip") unzip "$ARCHIVENAME" -d "$FONTDIR" ;;
-  esac
-  FONT_INSTALLED=0
-  rm "$ARCHIVEPATH"
 fi
 # }}}
 
