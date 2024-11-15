@@ -20,7 +20,7 @@ Currently I have saved configurations of:
 * [termux](https://github.com/termux/termux-app)
 
 ### How (to use this)?
-By design you can copy every folder and use it. For example, if you copy `config/alacritty` folder to your [`$XDG_CONFIG_HOME`](https://specifications.freedesktop.org/basedir-spec/latest/index.html#variables) it shall work. However, some applications, for instance zsh, cannot be combined (`$HOME/.zshenv` and `$ZDOTDIR`). 
+By design you can copy every folder and use it. For example, if you copy `config/alacritty` folder to your [`$XDG_CONFIG_HOME`](https://specifications.freedesktop.org/basedir-spec/latest/index.html#variables) it shall work. However, some applications, for instance zsh, cannot be moved (`$HOME/.zshenv` and `$ZDOTDIR`). 
 
 More traditional way is bootstrap. It just links all files to right places in you `$HOME` directory. Thankfully to it you can receive updates with one command
 Script understands XDG specification and saves set XDG userspace variables to separate `.zshenvp` file. The variables shall be set in next zsh instances.
