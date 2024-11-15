@@ -3,7 +3,27 @@
 
 set -e
 
+opts=$(getopt -o 'y' -n 'main' -- "$@")
+
+YES=""
 echo "Setting up home directory"
+eval set -- "$opts"
+while :; do
+  case "$1" in
+  -y)
+    YES="true"
+    shift
+    ;;
+  --)
+    shift
+    break
+    ;;
+  *)
+    echo "Options error"
+    exit 1
+    ;;
+  esac
+done
 
 # source: https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
@@ -17,7 +37,7 @@ fc-list | grep "JetBrainsMono Nerd Font," &>/dev/null &&
   FONT_INSTALLED=$?
 
 # Get fonts if needed {{{
-if [[ $FONT_INSTALLED -ne 0 ]] && ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
+if [[ -n $YES ]] || [[ $FONT_INSTALLED -ne 0 ]] && ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
   FONTNAME=JetBrainsMono
   FONTDIR=${XDG_DATA_HOME:-$HOME/.local/share}/fonts/$FONTNAME
   RELEASELINK=https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
