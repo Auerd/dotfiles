@@ -80,7 +80,7 @@ bindsym --release Print exec flameshot gui
 bindsym --release Shift+Print exec flameshot full
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # start rofi (a program launcher)
 bindsym $mod+d exec "rofi -modi drun,run -show drun"
@@ -133,7 +133,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+q floating toggle
+bindsym $mod+Shift+q floating toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
