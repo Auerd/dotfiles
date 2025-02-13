@@ -1,6 +1,6 @@
 -- vim:fileencoding=utf-8:foldmethod=marker
 -- Warning! This file executed before "lazy.nvim". That means plugins may not work there
--- If it's needed to use plugin in "keymap()" not in separate function, you can map key in the "init()" function of plugin
+-- If it's needed to use plugin in "keymap()" not in separate function, you can map the key in the "init()" function of plugin
 -- With functions plugin call can be delayed. That's the main purpose
 local map = vim.keymap.set
 
@@ -20,7 +20,7 @@ map("n", "<leader>fh", function()
 end, { desc = "Help tags" })
 -- }}}
 
--- Window navigation {{{
+-- Windows navigation {{{
 map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
@@ -85,4 +85,19 @@ end, { silent = true })
 map({ "i", "s" }, "<C-J>", function()
   require("luasnip").jump(-1)
 end, { silent = true })
+-- }}}
+
+-- Run file {{{
+map("n", "<F5>", function()
+  vim.cmd.write() -- Save
+  local ft = vim.o.filetype
+  local exec = vim.fn.executable
+  if ft == "python" and exec "python" then
+    return ":!python %<CR>"
+  elseif ft == "lua" and exec "lua" then
+    return ":!lua %<CR>"
+  elseif ft == "tex" and exec "pdflatex" then
+    return ":!pdflatex %<CR>"
+  end
+end, { desc = "Run file", expr = true })
 -- }}}
