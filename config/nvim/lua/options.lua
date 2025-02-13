@@ -7,11 +7,9 @@ o.shortmess = o.shortmess .. "I"
 o.number = true
 
 -- Indent
-o.tabstop = 4
-o.softtabstop = 2
-o.expandtab = true
-o.smarttab = true
-o.shiftwidth = 2
+-- See autocmds to get indent for appropriate filetype
+o.autoindent = true
+o.smartindent = true
 
 -- Windows
 o.splitbelow = true

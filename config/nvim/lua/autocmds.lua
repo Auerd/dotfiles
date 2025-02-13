@@ -6,14 +6,7 @@ autocmd("TermOpen", {
   command = "setlocal nonumber norelativenumber",
 })
 
-autocmd({ "BufEnter", "BufWinEnter" }, {
-  pattern = { "neo-tree" },
-  callback = function()
-    require("ufo").detach()
-  end,
-})
-
-autocmd("BufWritePre", {
+autocmd("BufWritePost", {
   pattern = "*.scss",
   callback = function(data)
     if vim.fn.executable "sass" ~= 1 then
@@ -21,5 +14,18 @@ autocmd("BufWritePre", {
     end
     local filename = data.file:match "(.+)%..+"
     vim.fn.jobstart("sass " .. filename .. ".scss " .. filename .. ".css")
+  end,
+})
+
+-- Indent
+autocmd({ "BufNew", "VimEnter" }, {
+  callback = function(data)
+    local ft = vim.o.filetype
+    local bo = vim.bo[data.buf]
+    if ft == "lua" then
+      bo.expandtab = true
+      bo.tabstop = 2
+      bo.shiftwidth = 2
+    end
   end,
 })
