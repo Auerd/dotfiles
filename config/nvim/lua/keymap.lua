@@ -89,15 +89,17 @@ end, { silent = true })
 
 -- Run file {{{
 map("n", "<F5>", function()
-  vim.cmd.write() -- Save
+  if vim.o.modified then
+    vim.cmd.write() -- Save
+  end
   local ft = vim.o.filetype
   local exec = vim.fn.executable
   if ft == "python" and exec "python" then
-    return ":!python %<CR>"
+    return "<cmd>!python %<CR>"
   elseif ft == "lua" and exec "lua" then
-    return ":!lua %<CR>"
+    return "<cmd>!lua %<CR>"
   elseif ft == "tex" and exec "pdflatex" then
-    return ":!pdflatex %<CR>"
+    return "<cmd>!pdflatex %<CR>"
   end
 end, { desc = "Run file", expr = true })
 -- }}}
