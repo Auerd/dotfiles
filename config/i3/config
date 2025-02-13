@@ -50,7 +50,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # picom
-exec /bin/bash "${XDG_CONFIG_HOME:-$HOME/.config}/i3/enablecompose.sh"
+exec --no-startup-id /bin/bash "${XDG_CONFIG_HOME:-$HOME/.config}/i3/enablecompose.sh"
 
 
 # gaps
@@ -70,7 +70,7 @@ workspace_layout tabbed
 
 # kill picom
 bindsym $mod+p exec ${XDG_CONFIG_HOME:-$HOME/.config}/i3/disablecompose.sh
-bindsym $mod+Shift+p exec ${XDG_CONFIG_HOME:-$HOME/.config}/i3/enablecompose.sh
+bindsym $mod+Shift+p exec --no-startup-id ${XDG_CONFIG_HOME:-$HOME/.config}/i3/enablecompose.sh
 
 # start a terminal
 bindsym $mod+Return exec kitty &>/dev/null || i3-sensible-terminal
