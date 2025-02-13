@@ -62,5 +62,5 @@ elif [[ -e $2 ]]; then
 fi
 
 echo "Linking $formatted1 to $formatted2..."
-ln -s "$(realpath -sm "$1")" "$(realpath -sm "$2")"
+ln -sf "$(realpath -sm "$1")" "$(realpath -sm "$2")"
 exit 0
