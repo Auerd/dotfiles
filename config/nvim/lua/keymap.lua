@@ -34,13 +34,6 @@ map("n", "<A-k>", "<C-y>", { desc = "Move view up" })
 map("n", "<A-l>", "zl", { desc = "Move view to the right" })
 -- }}}
 
--- Browsing {{{
-map("n", "<leader>e", function()
-  require("neo-tree.command").execute { toggle = true }
-end, { desc = "Toggle neo-tree" })
-map("n", "cd", "<cmd>cd %:h<CR>", { desc = "Go to parent directory" })
--- }}}
-
 -- Or you can use this workaround
 -- Lsp {{{
 -- Just bind it command
@@ -89,17 +82,25 @@ end, { silent = true })
 
 -- Run file {{{
 map("n", "<F5>", function()
-  if vim.o.modified then
-    vim.cmd.write() -- Save
-  end
+  local expr = " %<CR>"
   local ft = vim.o.filetype
-  local exec = vim.fn.executable
-  if ft == "python" and exec "python" then
-    return "<cmd>!python %<CR>"
-  elseif ft == "lua" and exec "lua" then
-    return "<cmd>!lua %<CR>"
-  elseif ft == "tex" and exec "pdflatex" then
-    return "<cmd>!pdflatex %<CR>"
+  local ifexec = vim.fn.executable
+  local fttoexec = {
+    ["python"] = "python",
+    ["lua"] = "lua",
+    ["tex"] = "pdflatex",
+    ["bash"] = "bash",
+  }
+  local toexec = fttoexec[ft]
+  if toexec ~= nil and ifexec(toexec) then
+    expr = toexec .. expr
+  else
+    return ""
   end
+  expr = "<cmd>!" .. expr
+  if vim.o.modified then
+    return "<cmd>w<CR>" .. expr
+  end
+  return expr
 end, { desc = "Run file", expr = true })
 -- }}}
