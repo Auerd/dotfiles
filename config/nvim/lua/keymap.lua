@@ -34,6 +34,10 @@ map("n", "<A-k>", "<C-y>", { desc = "Move view up" })
 map("n", "<A-l>", "zl", { desc = "Move view to the right" })
 -- }}}
 
+-- Browsing {{{
+map("n", "cd", "<cmd>cd %:h<CR>", { desc = "Go to parent directory" })
+-- }}}
+
 -- Or you can use this workaround
 -- Lsp {{{
 -- Just bind it command
