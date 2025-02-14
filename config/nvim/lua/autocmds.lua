@@ -1,4 +1,5 @@
 local autocmd = vim.api.nvim_create_autocmd
+local doautocmds = vim.api.nvim_exec_autocmds
 
 -- But "vim.wo.number = false" works for all buffers
 autocmd("TermOpen", {
@@ -17,8 +18,20 @@ autocmd("BufWritePost", {
   end,
 })
 
+-- Linter
+autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function(args)
+    require("conform").format({ bufnr = args.buf, timeout_ms = 5000, lsp_format = "fallback" }, function(err, did_edit)
+      if err == nil and did_edit then
+        doautocmds("User", { pattern = "BufLintAfter" })
+      end
+    end)
+  end,
+})
+
 -- Indent
-autocmd({ "BufNew", "VimEnter" }, {
+autocmd("BufEnter", {
   callback = function(data)
     local ft = vim.o.filetype
     local bo = vim.bo[data.buf]
