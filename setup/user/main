@@ -9,20 +9,20 @@ YES=""
 echo "Setting up home directory"
 eval set -- "$opts"
 while :; do
-  case "$1" in
-  -y)
-    YES="true"
-    shift
-    ;;
-  --)
-    shift
-    break
-    ;;
-  *)
-    echo "Options error"
-    exit 1
-    ;;
-  esac
+	case "$1" in
+	-y)
+		YES="true"
+		shift
+		;;
+	--)
+		shift
+		break
+		;;
+	*)
+		echo "Options error"
+		exit 1
+		;;
+	esac
 done
 
 # source: https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
@@ -33,188 +33,188 @@ CONFDIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 echo "Checking fonts availible..."
 fc-list | grep "JetBrainsMono Nerd Font," &>/dev/null &&
-  FONT_INSTALLED=0 ||
-  FONT_INSTALLED=$?
+	FONT_INSTALLED=0 ||
+	FONT_INSTALLED=$?
 
 # Get fonts if needed {{{
 if [[ $FONT_INSTALLED -ne 0 ]]; then
-  if [[ -n $YES ]] || ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
-    FONTNAME=JetBrainsMono
-    FONTDIR=${XDG_DATA_HOME:-$HOME/.local/share}/fonts/$FONTNAME
-    RELEASELINK=https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
-    mkdir -p "$FONTDIR/"
-    if command -v unxz &>/dev/null; then
-      FILEXTENSION="tar.xz"
-    elif command -v unzip &>/dev/null; then
-      FILEXTENSION="zip"
-    else
-      echo "Neither unxz nor unzip was found. Please, install one"
-      exit 1
-    fi
-    ARCHIVENAME="$FONTNAME.$FILEXTENSION"
-    ARCHIVEPATH="$FONTDIR/$ARCHIVENAME"
-    # source: https://gist.github.com/steinwaywhw/a4cd19cda655b8249d908261a62687f8
-    if command -v curl &>/dev/null; then
-      # Getting archive
-      curl -L "$(curl -s $RELEASELINK |
-        grep "$ARCHIVENAME" |
-        grep "https://" |
-        cut -d : -f 2,3 |
-        tr -d \" |
-        tr -d " ")" -o "$ARCHIVEPATH"
-    elif command -v wget &>/dev/null; then
-      wget -q $RELEASELINK -O - |
-        grep "$ARCHIVENAME" |
-        grep "https://" |
-        cut -d : -f 2,3 |
-        tr -d \" |
-        tr -d " " |
-        wget -i - -O "$ARCHIVEPATH"
-    else
-      echo "Neither curl nor wget was found. Please, install one"
-      exit 1
-    fi
-    case $FILEXTENSION in
-    "tar.xz") tar -xf "$ARCHIVEPATH" -C "$FONTDIR" ;;
-    "zip") unzip "$ARCHIVENAME" -d "$FONTDIR" ;;
-    esac
-    FONT_INSTALLED=0
-    rm "$ARCHIVEPATH"
-  fi
+	if [[ -n $YES ]] || ask "JetBrainsMono NF is not installed. Do you want to install locally? (y/n)"; then
+		FONTNAME=JetBrainsMono
+		FONTDIR=${XDG_DATA_HOME:-$HOME/.local/share}/fonts/$FONTNAME
+		RELEASELINK=https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
+		mkdir -p "$FONTDIR/"
+		if command -v unxz &>/dev/null; then
+			FILEXTENSION="tar.xz"
+		elif command -v unzip &>/dev/null; then
+			FILEXTENSION="zip"
+		else
+			echo "Neither unxz nor unzip was found. Please, install one"
+			exit 1
+		fi
+		ARCHIVENAME="$FONTNAME.$FILEXTENSION"
+		ARCHIVEPATH="$FONTDIR/$ARCHIVENAME"
+		# source: https://gist.github.com/steinwaywhw/a4cd19cda655b8249d908261a62687f8
+		if command -v curl &>/dev/null; then
+			# Getting archive
+			curl -L "$(curl -s $RELEASELINK |
+				grep "$ARCHIVENAME" |
+				grep "https://" |
+				cut -d : -f 2,3 |
+				tr -d \" |
+				tr -d " ")" -o "$ARCHIVEPATH"
+		elif command -v wget &>/dev/null; then
+			wget -q $RELEASELINK -O - |
+				grep "$ARCHIVENAME" |
+				grep "https://" |
+				cut -d : -f 2,3 |
+				tr -d \" |
+				tr -d " " |
+				wget -i - -O "$ARCHIVEPATH"
+		else
+			echo "Neither curl nor wget was found. Please, install one"
+			exit 1
+		fi
+		case $FILEXTENSION in
+		"tar.xz") tar -xf "$ARCHIVEPATH" -C "$FONTDIR" ;;
+		"zip") unzip "$ARCHIVENAME" -d "$FONTDIR" ;;
+		esac
+		FONT_INSTALLED=0
+		rm "$ARCHIVEPATH"
+	fi
 fi
 # }}}
 
 # Setup Alacritty {{{
 function setup-alacritty() {
-  local ALACRITTYCONFDIR="$CONFDIR/alacritty"
-  local DEFAULTDOTSCONF="$1/alacritty/alacritty.toml"
-  local DEFAULTCONF="$ALACRITTYCONFDIR/default.toml"
-  local MAINCONF="$ALACRITTYCONFDIR/alacritty.toml"
-  mkdir -p "$ALACRITTYCONFDIR"
-  if ! [ -f "$DEFAULTDOTSCONF" ]; then
-    echo "$DEFAULTDOTSCONF does not exist"
-    return 1
-  fi
-  nlink "$DEFAULTDOTSCONF" "$DEFAULTCONF"
-  echo "[general]" >"$MAINCONF"
-  echo "import = [\"$DEFAULTCONF\"]" >>"$MAINCONF"
+	local ALACRITTYCONFDIR="$CONFDIR/alacritty"
+	local DEFAULTDOTSCONF="$1/alacritty/alacritty.toml"
+	local DEFAULTCONF="$ALACRITTYCONFDIR/default.toml"
+	local MAINCONF="$ALACRITTYCONFDIR/alacritty.toml"
+	mkdir -p "$ALACRITTYCONFDIR"
+	if ! [ -f "$DEFAULTDOTSCONF" ]; then
+		echo "$DEFAULTDOTSCONF does not exist"
+		return 1
+	fi
+	nlink "$DEFAULTDOTSCONF" "$DEFAULTCONF"
+	echo "[general]" >"$MAINCONF"
+	echo "import = [\"$DEFAULTCONF\"]" >>"$MAINCONF"
 
-  if [[ $FONT_INSTALLED -ne 0 ]]; then
-    echo "Warning! Alacritty will use default font as JetBrainsMono NF is not installed"
-    return 0
-  fi
-  {
-    echo ""
-    echo "[font.normal]"
-    echo "family = \"JetBrainsMono Nerd Font\""
-  } >>"$MAINCONF"
-  return 0
+	if [[ $FONT_INSTALLED -ne 0 ]]; then
+		echo "Warning! Alacritty will use default font as JetBrainsMono NF is not installed"
+		return 0
+	fi
+	{
+		echo ""
+		echo "[font.normal]"
+		echo "family = \"JetBrainsMono Nerd Font\""
+	} >>"$MAINCONF"
+	return 0
 }
 # }}}
 
 # Setup Kitty {{{
 function setup-kitty() {
-  # $1 is dotfiles/config directory
-  local MAINCONF="$1/kitty/kitty.conf"
-  local CUSTOMCONF="$CONFDIR/kitty/custom.conf"
-  mkdir -p "$CONFDIR/kitty"
-  if ! [ -f "$MAINCONF" ]; then
-    echo "$MAINCONF does not exist"
-    return 1
-  fi
-  nlink "$MAINCONF" "$CONFDIR/kitty/kitty.conf"
-  touch "$CUSTOMCONF"
+	# $1 is dotfiles/config directory
+	local MAINDOTSCONF="$1/kitty/kitty.conf"
+	local CUSTOMCONF="$CONFDIR/kitty/custom.conf"
+	mkdir -p "$CONFDIR/kitty"
+	if ! [ -f "$MAINDOTSCONF" ]; then
+		echo "$MAINDOTSCONF does not exist"
+		return 1
+	fi
+	nlink "$MAINDOTSCONF" "$CONFDIR/kitty/kitty.conf"
+	touch "$CUSTOMCONF"
 
-  if [[ $FONT_INSTALLED -ne 0 ]]; then
-    echo "Warning! Kitty will use default font as JetBrainsMono NF is not installed"
-    return 0
-  fi
-  {
-    echo "font_family      JetBrainsMono NF Light"
-    echo "bold_font        JetBrainsMono NF Bold"
-    echo "italic_font      JetBrainsMono NF Light Italic"
-    echo "bold_italic_font JetBrainsMono NF Bold Italic"
-  } >"$CUSTOMCONF"
-  return 0
+	if [[ $FONT_INSTALLED -ne 0 ]]; then
+		echo "Warning! Kitty will use default font as JetBrainsMono NF is not installed"
+		return 0
+	fi
+	{
+		echo "font_family      JetBrainsMono NF Light"
+		echo "bold_font        JetBrainsMono NF Bold"
+		echo "italic_font      JetBrainsMono NF Light Italic"
+		echo "bold_italic_font JetBrainsMono NF Bold Italic"
+	} >"$CUSTOMCONF"
+	return 0
 }
 # }}}
 
 # Setup i3wm {{{
 function setup-i3wm() {
-  local I3CONFDIR="$CONFDIR/i3"
-  local file filename
-  mkdir -p "$I3CONFDIR"
-  for file in "$1"/i3/*; do
-    filename=${file##*/}
-    case $filename in
-    "config" | "startpoly.sh")
-      nlink "$file" "$I3CONFDIR/$filename"
-      ;;
-    *)
-      cp "$file" "$I3CONFDIR"
-      ;;
-    esac
-  done
-  return 0
+	local I3CONFDIR="$CONFDIR/i3"
+	local file filename
+	mkdir -p "$I3CONFDIR"
+	for file in "$1"/i3/*; do
+		filename=${file##*/}
+		case $filename in
+		"config" | "startpoly.sh")
+			nlink "$file" "$I3CONFDIR/$filename"
+			;;
+		*)
+			cp "$file" "$I3CONFDIR"
+			;;
+		esac
+	done
+	return 0
 }
 # }}}
 
 # Setup zsh {{{
 function setup-zsh() {
-  local TYPES=(DATA CONFIG STATE)
-  local type name dir
-  for type in "${TYPES[@]}"; do
-    name="XDG_${type}_HOME"
-    eval 'dir=$'"$name"
-    if [[ -n $dir ]]; then
-      echo "$name=\"$dir\"" >>"$HOME/.zshenvp"
-    fi
-  done
+	local TYPES=(DATA CONFIG STATE)
+	local type name dir
+	for type in "${TYPES[@]}"; do
+		name="XDG_${type}_HOME"
+		eval 'dir=$'"$name"
+		if [[ -n $dir ]]; then
+			echo "$name=\"$dir\"" >>"$HOME/.zshenvp"
+		fi
+	done
 }
 # }}}
 
 for file in "$FILES_DIR"/*; do
-  filename=${file##*/}
-  case $filename in
-  "setup") ;;
-  "config")
-    ndlink "$file" "$CONFDIR" -e alacritty,kitty,i3
-    setup-alacritty "$file"
-    setup-kitty "$file"
-    setup-i3wm "$file"
-    setup-zsh "$file"
-    ;;
-  "termux")
-    TERMUXDIR="$HOME/.termux"
-    ndlink "$file" "$TERMUXDIR"
-    ;;
-  "local")
-    [[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
-    [[ -d "$file/state" ]] && ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
-    ;;
-  "x"*)
-    [[ -e "$HOME/.$filename" ]] || cp "$file" "$HOME/.$filename"
-    ;;
-  *)
-    nlink "$file" "$HOME/.$filename"
-    ;;
-  esac
+	filename=${file##*/}
+	case $filename in
+	"setup") ;;
+	"config")
+		ndlink "$file" "$CONFDIR" -e alacritty,kitty,i3
+		setup-alacritty "$file"
+		setup-kitty "$file"
+		setup-i3wm "$file"
+		setup-zsh "$file"
+		;;
+	"termux")
+		TERMUXDIR="$HOME/.termux"
+		ndlink "$file" "$TERMUXDIR"
+		;;
+	"local")
+		[[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
+		[[ -d "$file/state" ]] && ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
+		;;
+	"x"*)
+		[[ -e "$HOME/.$filename" ]] || cp "$file" "$HOME/.$filename"
+		;;
+	*)
+		nlink "$file" "$HOME/.$filename"
+		;;
+	esac
 done
 
 filename=".background.jpg"
 filepath="$HOME/$filename"
 if [[ -e "$filepath" ]]; then
-  echo "$HOME/$filename exists. Skipping..."
+	echo "$HOME/$filename exists. Skipping..."
 else
-  link='https://i.imgur.com/Pjj3KTp.jpeg'
-  if command -v curl &>/dev/null; then
-    echo "Getting $filename..."
-    curl -# -o "$filepath" -L "$link"
-  elif command -v wget &>/dev/null; then
-    echo "Getting $filename..."
-    wget -O "$filepath" "$link"
-  else
-    echo "Neither curl nor wget were found. Please install one"
-    exit 1
-  fi
+	link='https://i.imgur.com/Pjj3KTp.jpeg'
+	if command -v curl &>/dev/null; then
+		echo "Getting $filename..."
+		curl -# -o "$filepath" -L "$link"
+	elif command -v wget &>/dev/null; then
+		echo "Getting $filename..."
+		wget -O "$filepath" "$link"
+	else
+		echo "Neither curl nor wget were found. Please install one"
+		exit 1
+	fi
 fi
