@@ -25,13 +25,17 @@ map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
+map("t", "<C-h>", "<Esc><C-w>h", { desc = "Go to Left Window", remap = true })
+map("t", "<C-j>", "<Esc><C-w>j", { desc = "Go to Lower Window", remap = true })
+map("t", "<C-k>", "<Esc><C-w>k", { desc = "Go to Upper Window", remap = true })
+map("t", "<C-l>", "<Esc><C-w>l", { desc = "Go to Right Window", remap = true })
 -- }}}
 
--- View navigation {{{
-map("n", "<A-h>", "zh", { desc = "Move view to the left" })
-map("n", "<A-j>", "<C-e>", { desc = "Move view down" })
-map("n", "<A-k>", "<C-y>", { desc = "Move view up" })
-map("n", "<A-l>", "zl", { desc = "Move view to the right" })
+-- Window size {{{
+map("n", "<A-h>", "<C-w><", { desc = "Decrease width" })
+map("n", "<A-l>", "<C-w>>", { desc = "Increase width" })
+map("n", "<A-j>", "<C-w>+", { desc = "Decrease height" })
+map("n", "<A-k>", "<C-w>-", { desc = "Increase height" })
 -- }}}
 
 -- Browsing {{{
