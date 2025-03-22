@@ -1,6 +1,18 @@
-if command -v git &>/dev/null && git -C (pwd) rev-parse
-	set DOTS $(git -C (pwd) rev-parse --show-toplevel)
+set FISH_DIR (dirname (dirname (status --current-filename)))
+if command -v git &>/dev/null
+	echo $FISH_DIR
+	if git -C $FISH_DIR rev-parse &>/dev/null
+		set DOTS $(git -C $FISH_DIR rev-parse --show-toplevel)
+		function dots
+			git -C $DOTS $argv
+		end
+	else
+		function dots
+			echo "No repository was found"
+		end
+	end
+else
 	function dots
-		git -C $DOTS $argv
+		echo "Cannot execute git"
 	end
 end
