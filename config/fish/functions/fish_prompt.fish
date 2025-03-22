@@ -3,19 +3,25 @@ function fish_prompt
     # alfa@nobby /path/to/dir $
     # with the path shortened and colored
     # and a "#" instead of a "$" when run as root.
-    set -l symbol ' $ '
+    set -l symbol '$ '
     set -l color $fish_color_cwd
     if fish_is_root_user
-        set symbol ' # '
+        set symbol '# '
         set -q fish_color_cwd_root
         and set color $fish_color_cwd_root
     end
 
-    echo -n $USER@$hostname
+    if test $COLUMNS -ge 70
+    	echo -n $USER@$hostname
+    	echo -n " "
+    end
 
-    set_color $color
-    echo -n (prompt_pwd)
-    set_color normal
+    if test $COLUMNS -ge 50
+    	set_color $color
+    	echo -n (prompt_pwd)
+    	echo -n " "
+    	set_color normal
+    end
 
     echo -n $symbol
 end
