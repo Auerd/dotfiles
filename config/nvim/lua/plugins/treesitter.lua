@@ -55,6 +55,7 @@ return {
       ensure_installed = {
         "c",
         "cpp",
+        "rust",
         "make",
         "cmake",
         "xcompose",

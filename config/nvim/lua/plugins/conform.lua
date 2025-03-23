@@ -11,6 +11,7 @@ return {
         javascript = { "prettier" },
         python = { "black" },
         json = { "jq" },
+        rust = { "rustfmt" },
       },
     },
   },

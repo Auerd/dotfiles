@@ -5,7 +5,7 @@ return {
     config = function()
       require("lazydev").setup()
       local lspconfig = require "lspconfig"
-      local servers = { "clangd", "bashls", "pyright", "cmake", "lua_ls", "html" }
+      local servers = { "clangd", "bashls", "pyright", "cmake", "lua_ls", "html", "rust_analyzer" }
       for _, lsp in ipairs(servers) do
         if lsp == "bashls" then
           lspconfig[lsp].setup { filetypes = { "sh", "zsh" } }
