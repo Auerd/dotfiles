@@ -56,6 +56,10 @@ end, { desc = "Lsp references" })
 map("n", "<leader>o", function()
   vim.lsp.buf.definition()
 end, { desc = "Lsp definitions" })
+
+map("n", "<leader>d", function()
+  vim.diagnostic.open_float()
+end, { desc = "Open diagnostic window" })
 -- }}}
 
 -- Numbers toggle {{{
