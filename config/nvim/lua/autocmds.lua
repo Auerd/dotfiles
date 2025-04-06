@@ -29,16 +29,23 @@ autocmd("BufWritePre", {
     end)
   end,
 })
-
 -- Indent
+local function setind2(buf)
+  buf.expandtab = true
+  buf.tabstop = 2
+  buf.shiftwidth = 2
+end
+local indents = {
+  lua = setind2,
+  c = setind2,
+  cpp = setind2,
+}
 autocmd("BufEnter", {
   callback = function(data)
     local ft = vim.o.filetype
     local bo = vim.bo[data.buf]
-    if ft == "lua" then
-      bo.expandtab = true
-      bo.tabstop = 2
-      bo.shiftwidth = 2
+    if indents[ft] ~= nil then
+      indents[ft](bo)
     end
   end,
 })
