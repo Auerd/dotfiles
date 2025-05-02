@@ -1,3 +1,4 @@
+-- vim:foldmethod=marker
 local autocmd = vim.api.nvim_create_autocmd
 local doautocmds = vim.api.nvim_exec_autocmds
 
@@ -7,6 +8,7 @@ autocmd("TermOpen", {
   command = "setlocal nonumber norelativenumber",
 })
 
+-- CSS compiler {{{
 autocmd("BufWritePost", {
   pattern = "*.scss",
   callback = function(data)
@@ -17,8 +19,9 @@ autocmd("BufWritePost", {
     vim.fn.jobstart("sass " .. filename .. ".scss " .. filename .. ".css")
   end,
 })
+-- }}}
 
--- Linter
+-- Linter {{{
 autocmd("BufWritePre", {
   pattern = "*",
   callback = function(args)
@@ -29,7 +32,9 @@ autocmd("BufWritePre", {
     end)
   end,
 })
--- Indent
+-- }}}
+
+-- Indent {{{
 local function setind2(buf)
   buf.expandtab = true
   buf.tabstop = 2
@@ -39,6 +44,11 @@ local indents = {
   lua = setind2,
   c = setind2,
   cpp = setind2,
+  sh = function(buf)
+    buf.expandtab = false
+    buf.tabstop = 4
+    buf.shiftwidth = 4
+  end,
 }
 autocmd("BufEnter", {
   callback = function(data)
@@ -49,3 +59,4 @@ autocmd("BufEnter", {
     end
   end,
 })
+-- }}}

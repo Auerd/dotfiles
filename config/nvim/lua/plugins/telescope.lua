@@ -13,7 +13,7 @@ return {
           i = {
             ["<esc>"] = function(bufnr)
               require("telescope.actions").close(bufnr)
-            end
+            end,
           },
         },
       },
