@@ -3,10 +3,11 @@
 
 set -e
 
-opts=$(getopt -o 'y' -n 'main' -- "$@")
-
 YES=""
 echo "Setting up home directory"
+
+# Parse opts {{{
+opts=$(getopt -o 'y' -n 'main' -- "$@")
 eval set -- "$opts"
 while :; do
 	case "$1" in
@@ -24,6 +25,7 @@ while :; do
 		;;
 	esac
 done
+# }}}
 
 # source: https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
@@ -139,27 +141,7 @@ function setup-kitty() {
 }
 # }}}
 
-# Setup i3wm {{{
-function setup-i3wm() {
-	local I3CONFDIR="$CONFDIR/i3"
-	local file filename
-	mkdir -p "$I3CONFDIR"
-	for file in "$1"/i3/*; do
-		filename=${file##*/}
-		case $filename in
-		"config" | "startpoly.sh")
-			nlink "$file" "$I3CONFDIR/$filename"
-			;;
-		*)
-			cp "$file" "$I3CONFDIR"
-			;;
-		esac
-	done
-	return 0
-}
-# }}}
-
-# Setup zsh {{{
+# Save XDG variables to zsh {{{
 function setup-zsh() {
 	local TYPES=(DATA CONFIG STATE)
 	local type name dir
@@ -178,19 +160,25 @@ for file in "$FILES_DIR"/*; do
 	case $filename in
 	"setup") ;;
 	"config")
-		ndlink "$file" "$CONFDIR" -e alacritty,kitty,i3
+		ndlink "$file" "$CONFDIR" -e alacritty,kitty,i3,polybar,rofi
 		setup-alacritty "$file"
 		setup-kitty "$file"
-		setup-i3wm "$file"
 		setup-zsh "$file"
+		for app in "i3" "polybar" "rofi"; do
+			[[ -e "$CONFDIR/$app" ]] &&
+				echo "Config of $app already exists. Skipping..." && continue
+			ncp "$file/$app" "$CONFDIR/"
+		done
 		;;
 	"termux")
 		TERMUXDIR="$HOME/.termux"
 		ndlink "$file" "$TERMUXDIR"
 		;;
 	"local")
-		[[ -d "$file/share" ]] && ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
-		[[ -d "$file/state" ]] && ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
+		[[ -d "$file/share" ]] &&
+			ndlink "$file/share" "${XDG_DATA_HOME:-$HOME/.local/share}"
+		[[ -d "$file/state" ]] &&
+			ndlink "$file/state" "${XDG_STATE_HOME:-$HOME/.local/state}"
 		;;
 	"x"*)
 		[[ -e "$HOME/.$filename" ]] || cp "$file" "$HOME/.$filename"
@@ -201,6 +189,7 @@ for file in "$FILES_DIR"/*; do
 	esac
 done
 
+# Get background image{{{
 filename=".background.jpg"
 filepath="$HOME/$filename"
 if [[ -e "$filepath" ]]; then
@@ -218,3 +207,4 @@ else
 		exit 1
 	fi
 fi
+# }}}
