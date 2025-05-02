@@ -1,7 +1,7 @@
 -- vim:fileencoding=utf-8:foldmethod=marker
 -- Warning! This file executed before "lazy.nvim". That means plugins may not work there
 -- If it's needed to use plugin in "keymap()" not in separate function, you can map the key in the "init()" function of plugin
--- With functions plugin call can be delayed. That's the main purpose
+-- With help of functions plugin call can be delayed. That's the main purpose
 local map = vim.keymap.set
 
 -- This will work!
@@ -13,7 +13,7 @@ map("n", "<leader>fg", function()
   require("telescope.builtin").live_grep()
 end, { desc = "Grep threw the files" })
 map("n", "<leader>fb", function()
-  require("telescope.builtin").buffers()
+  require("telescope.builtin").buffers { only_cwd = vim.fn.haslocaldir() == 1 }
 end, { desc = "List availible buffers" })
 map("n", "<leader>fh", function()
   require("telescope.builtin").help_tags()
@@ -39,7 +39,8 @@ map("n", "<A-k>", "<C-w>-", { desc = "Increase height" })
 -- }}}
 
 -- Browsing {{{
-map("n", "cd", "<cmd>cd %:h<CR>", { desc = "Go to parent directory" })
+map("n", "cd", "<cmd>tc %:h<CR>", { desc = "Go to parent directory of edited file" })
+map("n", "cp", "<cmd>tc ..<CR>", { desc = "Go to parent directory of current directory" })
 -- }}}
 
 -- Or you can use this workaround
@@ -81,9 +82,6 @@ map("i", "jj", "<Esc>", { desc = "Switch to normal mode" })
 
 -- LuaSnip {{{
 -- source: https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
--- This is not acceptable:
---local ls = require "luasnip"
--- But this is OK
 map({ "i", "s" }, "<C-L>", function()
   require("luasnip").jump(1)
 end, { silent = true })
