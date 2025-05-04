@@ -59,8 +59,11 @@ gaps outer 0
 smart_gaps off
 
 # borders
-default_border none
-default_floating_border none
+#default_border pixel 5
+#default_floating_border pixel 5
+for_window [floating] border normal 5
+for_window [tiling] border none
+
 
 # icons
 for_window [all] title_window_icon on
@@ -185,8 +188,8 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exit
 
-set $resize_amount 1 px
-set $big_resize_amount 3 px
+set $resize_amount 2 px
+set $big_resize_amount 10 px
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
