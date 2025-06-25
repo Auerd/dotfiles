@@ -1,6 +1,5 @@
 set FISH_DIR (dirname (dirname (status --current-filename)))
 if command -v git &>/dev/null
-	echo $FISH_DIR
 	if git -C $FISH_DIR rev-parse &>/dev/null
 		set DOTS $(git -C $FISH_DIR rev-parse --show-toplevel)
 		function dots
