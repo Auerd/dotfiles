@@ -31,6 +31,15 @@ map("t", "<C-k>", "<Esc><C-w>k", { desc = "Go to Upper Window", remap = true })
 map("t", "<C-l>", "<Esc><C-w>l", { desc = "Go to Right Window", remap = true })
 -- }}}
 
+-- Buffers navigation {{{
+map("n", "<leader>z", function()
+  vim.cmd.bp()
+end, { desc = "Go to previous buffer" })
+map("n", "<leader>x", function()
+  vim.cmd.bn()
+end, { desc = "Go to next buffer" })
+-- }}}
+
 -- Window size {{{
 map("n", "<A-h>", "<C-w><", { desc = "Decrease width" })
 map("n", "<A-l>", "<C-w>>", { desc = "Increase width" })
