@@ -101,25 +101,45 @@ end, { silent = true })
 
 -- Run file {{{
 map("n", "<F5>", function()
-  local expr = " %<CR>"
-  local ft = vim.o.filetype
-  local ifexec = vim.fn.executable
   local fttoexec = {
-    ["python"] = "python",
-    ["lua"] = "lua",
-    ["tex"] = "pdflatex",
-    ["bash"] = "bash",
+    python = "python",
+    lua = "lua",
+    tex = "pdflatex",
+    bash = "bash",
+    sh = "bash",
   }
-  local toexec = fttoexec[ft]
-  if toexec ~= nil and ifexec(toexec) then
-    expr = toexec .. expr
+  local toexec = fttoexec[vim.o.filetype]
+  local expr
+  if toexec ~= nil and vim.fn.executable(toexec) then
+    expr = "<cmd>!" .. toexec .. " %<CR>"
   else
     return ""
   end
-  expr = "<cmd>!" .. expr
   if vim.o.modified then
     return "<cmd>w<CR>" .. expr
   end
   return expr
 end, { desc = "Run file", expr = true })
+-- }}}
+
+-- Special hotkeys {{{
+map("n", "<F4>", function()
+  local fttofunc = {
+    html = function()
+      if vim.fn.executable "live-server" then
+        vim.cmd.terminal "live-server --no-browser"
+        vim.cmd.bp()
+      end
+    end,
+  }
+  fttofunc["css"] = fttofunc["html"]
+
+  local torun = fttofunc[vim.o.filetype]
+  if vim.o.modified then
+    vim.cmd "w"
+  end
+  if torun ~= nil then
+    torun()
+  end
+end, { desc = "Different functions" })
 -- }}}
