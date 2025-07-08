@@ -24,6 +24,10 @@ o.smoothscroll = true
 -- End of buffer character
 o.fcs = "eob: "
 
+-- Line breaks
+o.linebreak = true
+o.showbreak = "~~"
+
 -- Keymap
 o.timeout = true
 o.timeoutlen = 300
