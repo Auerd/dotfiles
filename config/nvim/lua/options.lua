@@ -32,6 +32,11 @@ o.showbreak = "~~"
 o.timeout = true
 o.timeoutlen = 300
 
+-- Folds
+o.foldmethod = 'indent'
+o.foldminlines = 10
+o.foldnestmax = 2
+
 local g = vim.g
 
 -- Providers
