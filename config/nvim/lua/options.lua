@@ -36,6 +36,7 @@ o.timeoutlen = 300
 o.foldmethod = 'indent'
 o.foldminlines = 10
 o.foldnestmax = 2
+o.conceallevel = 1
 
 local g = vim.g
 

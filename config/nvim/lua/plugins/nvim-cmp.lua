@@ -1,5 +1,4 @@
-return
-{
+return {
   "hrsh7th/nvim-cmp",
   opts = function()
     local cmp = require "cmp"
@@ -12,8 +11,8 @@ return
         end,
       },
       mapping = cmp.mapping.preset.insert {
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),   -- Up
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),    -- Down
+        ["<C-b>"] = cmp.mapping.scroll_docs(-4), -- Up
+        ["<C-f>"] = cmp.mapping.scroll_docs(4), -- Down
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<CR>"] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Replace,
@@ -60,5 +59,6 @@ return
       },
     },
     "hrsh7th/cmp-path",
+    "windwp/nvim-autopairs",
   },
 }

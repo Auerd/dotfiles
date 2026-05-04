@@ -41,7 +41,7 @@ return {
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     keys = {
       { "<c-space>", desc = "Increment Selection" },
-      { "<bs>", desc = "Decrement Selection", mode = "x" },
+      { "<bs>",      desc = "Decrement Selection", mode = "x" },
     },
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
@@ -49,6 +49,7 @@ return {
       sync_install = false,
       highlight = {
         enable = true,
+        disable = { "latex" },
         additional_vim_regex_highlighting = false,
       },
       indent = { enable = false },
@@ -74,7 +75,6 @@ return {
         "git_rebase",
         "gitattributes",
         "gitignore",
-        "latex",
       },
       incremental_selection = {
         enable = true,
