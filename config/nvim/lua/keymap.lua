@@ -3,6 +3,8 @@
 -- If it's needed to use plugin in "keymap()" not in separate function, you can map the key in the "init()" function of plugin
 -- With help of functions plugin call can be delayed. That's the main purpose
 local map = vim.keymap.set
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- This will work!
 -- Telescope {{{
