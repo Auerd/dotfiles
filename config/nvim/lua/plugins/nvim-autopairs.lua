@@ -5,6 +5,7 @@ return {
     config = function()
       local npairs = require "nvim-autopairs"
       npairs.setup()
+      --[[
       local Rule = require "nvim-autopairs.rule"
       local cond = require "nvim-autopairs.conds"
       npairs.add_rules {
@@ -20,6 +21,7 @@ return {
           -- disable adding a newline when you press <cr>
           :with_cr(cond.none()),
       }
+        --]]
     end,
   },
 }
