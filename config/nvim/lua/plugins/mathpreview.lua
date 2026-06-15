@@ -1,11 +1,26 @@
 return {
-  "your-username/latex-preview.nvim",
-  enabled = vim.env.TERM == "xterm-kitty",
-  dependencies = { "folke/snacks.nvim" },
-  ft = { "tex", "latex", "markdown", "rmd", "quarto" },
-  opts = {
-    setup_keymap = true, -- bind <leader>ih in supported filetypes
-    cache = true, -- persist renders to disk
-    cache_dir = "aux", -- default: <texfile-dir>/aux/latex-preview-cache/
+  "jbyuki/nabla.nvim",
+  dependencies = {
+    "nvim-neo-tree/neo-tree.nvim",
+    "williamboman/mason.nvim",
   },
+  lazy = true,
+
+  config = function()
+    require("nvim-treesitter.configs").setup {
+      ensure_installed = { "latex" },
+      auto_install = true,
+      sync_install = false,
+    }
+  end,
+
+  keys = function()
+    return {
+      {
+        "<leader>p",
+        ':lua require("nabla").popup()<cr>',
+        desc = "NablaPopUp",
+      },
+    }
+  end,
 }
